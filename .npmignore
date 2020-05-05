@@ -1,0 +1,13 @@
+node_modules
+node_modules/**/*
+samples
+samples/*
+.env
+npm-debug.*
+*.jks
+*.p12
+*.key
+*.mobileprovision
+*.swp
+.DS_Store
+yarn.lock
