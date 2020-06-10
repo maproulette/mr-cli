@@ -11,6 +11,14 @@ const argv =
   .demandCommand()
   .boolean('quiet')
   .alias('quiet', 'silent')
-  .describe('quiet', 'Quiet mode: suppress status messages')
+  .describe(
+    'quiet',
+    'Quiet mode: suppress status messages'
+  )
+  .boolean('rfc7464')
+  .describe(
+    'rfc7464',
+    'Output RFC 7464 compliant format (MapRoulette v3.6.5+)'
+  )
   .wrap(yargs.terminalWidth())
   .argv

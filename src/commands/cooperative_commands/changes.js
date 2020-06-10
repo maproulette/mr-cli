@@ -67,6 +67,10 @@ function writeTaskGeoJSON(features, change, format, context) {
     }
   }
 
+  if (context.rfc7464) {
+    // RFC 7464 start of sequence
+    context.out.write(Constants.controlChars.RS, "utf8")
+  }
   context.out.write(JSON.stringify(geoJSON), "utf8")
   context.out.write("\n", "utf8")
 }
@@ -111,7 +115,14 @@ exports.handler = async function(argv) {
   spinner.succeed()
   spinner.start("Generate tasks")
 
-  const context = { out, spinner, bijective: argv.bijective, osmChange: argv.osc, josmChange: argv.josm }
+  const context = {
+    out,
+    spinner,
+    bijective: argv.bijective,
+    osmChange: argv.osc,
+    josmChange: argv.josm,
+    rfc7464: argv.rfc7464,
+  }
   try {
     for (let i = 0; i < argv.inputFiles.length; i++) {
       context.filename = argv.inputFiles[i]

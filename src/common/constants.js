@@ -34,6 +34,10 @@ const Constants = Object.freeze({
       delete: 'delete',
     }),
   }),
+
+  controlChars: Object.freeze({
+    RS: String.fromCharCode(0x1E), // RS (record separator) control char
+  }),
 })
 
 module.exports = Constants

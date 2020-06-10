@@ -200,13 +200,19 @@ mapper.
 ## Additional Notes
 - The `mr cooperative` command usually needs to contact the OSM servers when
 generating tasks and thus needs internet access to run. To play nice with OSM
-servers, at most 4 network requests per second will be made.
+servers, at most 4 network requests per second will be made
 
 - Generated challenge files use a
 [line-by-line](https://github.com/osmlab/maproulette3/wiki/Line-by-Line-GeoJSON-Format)
 format that is well suited to streaming, whereby each line in the file contains a
 complete GeoJSON object representing a single task in the challenge. It may not be
 possible to open or manipulate this file using traditional GeoJSON tools
+
+- As of v0.1.1, a `--rfc7464` option can be provided to output line-by-line
+GeoJSON using [RFC 7464](https://tools.ietf.org/html/rfc7464) compliant
+formatting (for use with MapRoulette v3.6.5+ instances). If you are generating
+challenges with just a single task, it is recommended you use this option if
+possible
 
 - This utility has not been tested on Windows
 
