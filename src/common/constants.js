@@ -38,6 +38,20 @@ const Constants = Object.freeze({
   controlChars: Object.freeze({
     RS: String.fromCharCode(0x1E), // RS (record separator) control char
   }),
+
+  geoJSON: Object.freeze({
+    types: Object.freeze([ // https://tools.ietf.org/html/rfc7946#section-1.4
+      "Point",
+      "MultiPoint",
+      "LineString",
+      "MultiLineString",
+      "Polygon",
+      "MultiPolygon",
+      "GeometryCollection",
+      "Feature",
+      "FeatureCollection",
+    ]),
+  }),
 })
 
 module.exports = Constants

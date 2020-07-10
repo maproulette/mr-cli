@@ -1,9 +1,7 @@
 # mr-cli MapRoulette Command Line Interface Utility
 
 The mr-cli package provides a `mr` command-line utility intended to offer
-various tools for working with [MapRoulette](https://maproulette.org). At the
-moment, only generation of cooperative challenge GeoJSON is supported, but
-additional tools and features are planned for the future.
+various tools for working with [MapRoulette](https://maproulette.org).
 
 Use `mr --help` for a list of top-level commands, and `mr <command> --help` for
 usage and options available for a specific command.
@@ -197,22 +195,191 @@ will first be fetched so that only pertinent tag changes are shown to the
 mapper.
 
 
-## Additional Notes
-- The `mr cooperative` command usually needs to contact the OSM servers when
-generating tasks and thus needs internet access to run. To play nice with OSM
-servers, at most 4 network requests per second will be made
+## Attaching Data To Tasks
 
+MapRoulette v3.6.5 and above support data attachments to tasks. Please see the
+[MapRoulette
+wiki](https://github.com/osmlab/maproulette3/wiki/Task-Attachments)
+for details on what kinds of attachments are supported.
+
+The mr-cli utility can be used to add attachments to tasks in an existing
+line-by-line GeoJSON file, producing a new GeoJSON file with the attachments
+included.
+
+Attachment files are matched to tasks based on specified feature properties,
+attachment filenames, and optional match patterns.
+
+Basic Syntax:
+
+```
+mr attach task [--in <challenge-file>] [--out <challenge-file>] <kind|as-is> <auto-detect|type> <file-pattern> [property-pattern] [property] [format] [encode]
+```
+
+#### Example 1: Attach GPX reference layers based on OSM id
+Assume that we have a `my_challenge.geojson` file and that each task has an
+`osmid` feature property formatted like `n1234`, `n5678`, etc., and that
+our respective attachment files are named `attachment_n1234.gpx`,
+`attachment_n5678.gpx`, and so on.
+
+In order for mr-cli to know how to match up which file with which task, it's
+necessary to provide a *file pattern* that shows mr-cli how to build the filename
+for each task based on the value of a feature property. In this case, we need to
+tell mr-cli to use the value of the `osmid` property in the filename, which we
+can do by surrounding it with curly braces as so: `attachment_{osmid}.gpx`
+
+> Note: only one property may be referenced in a filename pattern
+
+So here is our full command. We'll output the updated challenge to an
+`updated_challenge.geojson` and we'll also use the `--auto-detect` option to
+automatically detect that we're working with GPX files.
+
+```
+mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind referenceLayer --auto-detect --file-pattern 'attachment_{osmid}.gpx'
+```
+
+#### Example 2: Attaching multiple reference layers to tasks
+Building on Example 1 above, the file pattern can include wildcard characters
+that can be used to match multiple files. All matching files will be included
+as attachments. Perhaps we have both a GPX layer and an OSM layer for each task.
+
+> :warning: to match different types of files you **must** use the `--auto-detect`
+> option. If an explicit type is specified instead, all matching files will be
+> treated as that type
+
+Our command is the same as in example 1, but includes a `*` for the file
+extension to potentially match multiple files per osmid:
+
+> Patterns should be surrounded by single quotes when used on the command line
+> to avoid potential conflicts with special shell characters
+
+```
+mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind referenceLayer --auto-detect --file-pattern 'attachment_{osmid}.*'
+```
+
+#### Example 3: Extracting only relevant parts of property value
+Building on Example 1, what if our `osmid` property was instead formatted
+as `node/1234`, `node/4567` while our files were still named `attachment_n1234.gpx`,
+`attachment_n5678.gpx`, and so on? We'll need to extract the first letter of the
+type as well as the numeric id. mr-cli makes that possible through *property
+patterns*.
+
+Property patterns are standard [regular
+expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet),
+and you can use capture groups (parentheses) to extract just parts of the
+property value. Only the captured parts will be substituted into the filename
+pattern (in the order in which they are captured).
+
+Here is a regular expression that will capture the first letter ("word" character),
+ignore everything that follows that isn't a digit, and then capture all the remaining
+digits: `(\w)[^\d]+(\d+)`
+
+> Note: when a property pattern is used, only tasks with a matching value will
+> be considered. That means property patterns can also be used to limit
+> attachments to matching tasks even if you don't need to use capture groups
+
+We'll use this in our command. This is the same command as in Example 1 except now
+we specify a `--property-pattern` option with our regular expression
+
+> Note: backslashes need to be escaped when used on the command line and
+> therefore appear as `\\` when regular expressions are shown in example mr-cli
+> commands
+
+```
+mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind referenceLayer --auto-detect --property-pattern '(\\w)[^\\d]+(\\d+)' --file-pattern 'attachment_{osmid}.gpx'
+```
+
+#### Example 4: More control over the filename pattern
+In Example 3, we were able to continue referencing `{osmid}` in our filename
+pattern because we were lucky to want exactly the captured data in exactly the
+order it appeared in the property value. That may not always be the case, and
+it can be useful to have more control over where each captured portion of the
+property value appears in your filename.
+
+Building on Example 3, let's assume our filenames are instead named
+`attachment_node_1234.gpx`, `attachment_node_4567.gpx`, etc. We now need to
+capture the full OSM type and the numeric id, but separate them with an
+underscore in the filename pattern.
+
+Our updated property pattern: `(\w+)[^\d]+(\d+)`
+Our updated filename pattern: `attachment_\1_\2.gpx`
+
+Since our filename pattern no longer refers to `osmid` explicitly, we also need
+to provide a `--property` option that tells mr-cli to look at the `osmid`
+property.
+
+```
+mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind referenceLayer --auto-detect --property osmid --property-pattern '(\\w+)[^\\d]+(\\d+)' --file-pattern 'attachment_\\1_\\2.gpx'
+```
+
+#### Example 5: Specifying an explicit file type
+So far we've always used the `--auto-detect` option, which inspects the actual
+attachment data (not the filename) to try to determine what type of file it
+represents. You can also explicitly specify the type if you want. Note, however,
+that only one type can be specified.
+
+Here is the command from Example 1 with the gpx type explicitly specified:
+
+```
+mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind referenceLayer --type gpx --file-pattern 'attachment_{osmid}.xml'
+```
+
+#### Example 6: Attaching blobs
+MapRoulette supports attachments of arbitrary data as blobs. These are intended
+for attachments that are to be consumed by external processes, and are ignored
+by MapRoulette.
+
+When attaching blobs, use of `--format` is recommended, and if the data isn't
+JSON-compatible (i.e. XML or binary data), then `--encode` must be specified or
+you'll end up with malformed GeoJSON.
+
+Here is an example command that attaches arbitrary XML data as a blob. Note
+that `--format xml` has been specified and `--encode` has also been provided.
+
+```
+mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind blob --format xml --encode --file-pattern 'attachment_{osmid}.xml'
+```
+
+#### Using your own generated attachments as-is
+Normally the mr-cli tool takes your raw attachment files and builds all of the
+proper task attachment JSON required by MapRoulette as documented on the
+[wiki](https://github.com/osmlab/maproulette3/wiki/Task-Attachments). But
+if you've generated your own complete attachment JSON files conforming to
+the documentation, you can ask mr-cli to simply use your files as-is by using
+the `--as-is` option. The only augmentation mr-cli may perform is to generate
+`id` fields for your attachments if missing.
+
+```
+mr attach task --in my_challenge.geojson --out updated_challenge.geojson --as-is --file-pattern 'attachment_{osmid}.json'
+```
+
+#### Mixing multiple kinds of attachments
+mr-cli only allows one kind of attachment (such as blobs or reference layers)
+in a single run, but you can add additional kinds of attachments with
+additional runs on the output. The additional matching attachments will be
+added to tasks as needed, leaving earlier attachments intact.
+
+It's even possible to pipe multiple mr-cli runs together using the standard
+input and standard output. For example, the following attaches blobs followed
+by reference layers. Note that the first command does not include an `--out`,
+thereby sending its results to the standard output, and the second command
+omits the `--in` so that it reads from the standard input:
+
+```
+mr attach task --in my_challenge.geojson --kind blob --format xml --encode --file-pattern 'blobs_{osmid}.xml' | mr attach task --out updated_challenge.geojson --kind referenceLayer --auto-detect --file-pattern 'layers_{osmid}.gpx'
+```
+
+
+### Additional Notes
 - Generated challenge files use a
 [line-by-line](https://github.com/osmlab/maproulette3/wiki/Line-by-Line-GeoJSON-Format)
 format that is well suited to streaming, whereby each line in the file contains a
 complete GeoJSON object representing a single task in the challenge. It may not be
 possible to open or manipulate this file using traditional GeoJSON tools
 
-- As of v0.1.1, a `--rfc7464` option can be provided to output line-by-line
-GeoJSON using [RFC 7464](https://tools.ietf.org/html/rfc7464) compliant
-formatting (for use with MapRoulette v3.6.5+ instances). If you are generating
-challenges with just a single task, it is recommended you use this option if
-possible
+- As of v0.1.2, [RFC 7464](https://tools.ietf.org/html/rfc7464) compliant
+line-by-line GeoJSON is generated by default. If you must upload your challenge
+to a MapRoulette instance earlier than v3.6.5, you can specify `--no-rfc7464`
+to generate the old format.
 
 - This utility has not been tested on Windows
 
