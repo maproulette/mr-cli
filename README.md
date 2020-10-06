@@ -51,9 +51,9 @@ MapRoulette during challenge creation will be output.
 By default, the GeoJSON is written to the standard output. You can easily
 specify the name of an output file instead with the `--out` parameter.
 
-> :warning: the `mr cooperative` command is **HIGHLY EXPERIMENTAL**. Please
-> carefully and diligently inspect the generated tasks as this tool almost
-> certainly contains bugs
+> :warning: the `mr cooperative` command is **EXPERIMENTAL**. Please carefully
+> and diligently inspect the generated tasks as this tool almost certainly
+> contains bugs
 
 
 ### JOSM Workflow
@@ -199,7 +199,7 @@ mapper.
 
 MapRoulette v3.6.5 and above support data attachments to tasks. Please see the
 [MapRoulette
-wiki](https://github.com/osmlab/maproulette3/wiki/Task-Attachments)
+docs](https://learn.maproulette.org/documentation/task-attachments/)
 for details on what kinds of attachments are supported.
 
 The mr-cli utility can be used to add attachments to tasks in an existing
@@ -341,9 +341,9 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind 
 
 #### Using your own generated attachments as-is
 Normally the mr-cli tool takes your raw attachment files and builds all of the
-proper task attachment JSON required by MapRoulette as documented on the
-[wiki](https://github.com/osmlab/maproulette3/wiki/Task-Attachments). But
-if you've generated your own complete attachment JSON files conforming to
+proper task attachment JSON required by MapRoulette, as
+[documented](https://learn.maproulette.org/documentation/task-attachments/).
+But if you've generated your own complete attachment JSON files conforming to
 the documentation, you can ask mr-cli to simply use your files as-is by using
 the `--as-is` option. The only augmentation mr-cli may perform is to generate
 `id` fields for your attachments if missing.
@@ -371,7 +371,7 @@ mr attach task --in my_challenge.geojson --kind blob --format xml --encode --fil
 
 ### Additional Notes
 - Generated challenge files use a
-[line-by-line](https://github.com/osmlab/maproulette3/wiki/Line-by-Line-GeoJSON-Format)
+[line-by-line](https://learn.maproulette.org/documentation/line-by-line-geojson/)
 format that is well suited to streaming, whereby each line in the file contains a
 complete GeoJSON object representing a single task in the challenge. It may not be
 possible to open or manipulate this file using traditional GeoJSON tools
