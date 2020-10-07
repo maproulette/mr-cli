@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v0.1.3 - 2020-10-07
+- Make imports of xmltojson package all lowercase by @andrewharvey
+
+- Update MapRoulette documentation links in README to point to
+learn.maproulette.org
+
+- Minor package dependency updates
+
 
 ## v0.1.2 - 2020-07-10
 - Add `attach task` command for adding task attachments to an existing

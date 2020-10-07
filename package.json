@@ -1,7 +1,7 @@
 {
   "name": "@maproulette/mr-cli",
-  "version": "0.1.2",
-  "description": "Utilities for MapRoulette challenge management",
+  "version": "0.1.3",
+  "description": "CLI utility to generate MapRoulette cooperative challenges, add task attachments, etc.",
   "keywords": [
     "maproulette",
     "openstreetmap",
