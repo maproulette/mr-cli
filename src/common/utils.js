@@ -1,5 +1,5 @@
 const { DOMParser, XMLSerializer } = require('xmldom')
-const xmlToJSON = require('xmlToJSON')
+const xmlToJSON = require('xmltojson')
 const turf = require('@turf/turf')
 const fetch = require('node-fetch')
 const _isPlainObject = require('lodash.isplainobject')

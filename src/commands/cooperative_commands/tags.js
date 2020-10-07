@@ -1,5 +1,5 @@
 const { DOMParser } = require('xmldom')
-const xmlToJSON = require('xmlToJSON')
+const xmlToJSON = require('xmltojson')
 const _fromPairs = require('lodash.frompairs')
 const _isEqual = require('lodash.isequal')
 const _differenceWith = require('lodash.differencewith')

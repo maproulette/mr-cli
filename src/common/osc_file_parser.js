@@ -1,5 +1,5 @@
 const { DOMParser, XMLSerializer } = require('xmldom')
-const xmlToJSON = require('xmlToJSON')
+const xmlToJSON = require('xmltojson')
 const _fromPairs = require('lodash.frompairs')
 const _find = require('lodash.find')
 const _flatten = require('lodash.flatten')
