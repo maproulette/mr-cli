@@ -1,5 +1,5 @@
 /**
- * Represents the top-level `cooperative` command, which simply delegates to
+ * Represents the top-level `bundle` command, which simply delegates to
  * the various sub-command modules
  */
 exports.command = "bundle <command> [--out <challenge-file>] <input-files..>";
