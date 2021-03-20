@@ -1,11 +1,12 @@
 const glob = require("glob");
 const Base64 = require("js-base64").Base64;
-const fs = require("fs").promises;
+const fsPromise = require("fs").promises;
+const fs = require("fs");
 const Spinner = require("../../common/spinner");
 const Utils = require("../../common/utils");
 const Constants = require("../../common/constants");
 
-const bundleTasks = (tasks, externalId = "CLUSTER_ID_2") => {
+const bundleTasks = (tasks, externalId) => {
   const bundled = [];
   let leftoverTasks = tasks;
   let infiniteLoopCount = 0;
@@ -75,11 +76,21 @@ const bundleTasks = (tasks, externalId = "CLUSTER_ID_2") => {
 const generateBundleWork = async (context, changeData) => {
   try {
     const fileObj = JSON.parse(changeData);
-    const bundledTasks = bundleTasks(fileObj.features);
+    const bundledTasks = bundleTasks(fileObj.features, context.externalId);
 
-    const newData = JSON.stringify({ ...fileObj, features: bundledTasks });
+    context.out.write("[", "utf8");
+    context.out.write("\n", "utf8");
 
-    await fs.writeFile("output.geojson", newData);
+    for (let i = 0; i < bundledTasks.length; i++) {
+      context.out.write(JSON.stringify(bundledTasks[i]), "utf8");
+      if (i !== bundledTasks.length - 1) {
+        context.out.write(",", "utf8");
+      }
+      context.out.write("\n", "utf8");
+    }
+
+    context.out.write("]", "utf8");
+    context.out.write("\n", "utf8");
   } catch (exception) {
     context.spinner.fail(`${context.filename}: ${exception.message}`);
     process.exit(2);
@@ -88,24 +99,12 @@ const generateBundleWork = async (context, changeData) => {
 
 // yargs command-module functions. See:
 // https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
-exports.command = "external [--out <challenge-file>] <input-files..>";
+exports.command = "external [<externalId>] [outputFile] [<inputFiles..>]";
 
 exports.describe = "Tasks with change files";
 
 exports.builder = function (yargs) {
-  return yargs
-    .positional("input-files", {
-      describe: "One or more JOSM .osm files to process",
-    })
-    .boolean("bijective")
-    .describe(
-      "bijective",
-      "Create one task per osm file (all changes in file go into single task)"
-    )
-    .describe({
-      out: "Output path for MapRoulette challenge GeoJSON file",
-    })
-    .help();
+  return yargs.help();
 };
 
 exports.handler = async function (argv) {
@@ -127,10 +126,13 @@ exports.handler = async function (argv) {
   spinner.start("Generate tasks");
 
   // Setup write stream for output containing line-by-line GeoJSON entries
-  const out = argv.out ? fs.createWriteStream(argv.out) : process.stdout;
+  const out = argv.outputFile
+    ? fs.createWriteStream(argv.outputFile)
+    : process.stdout;
 
   const context = {
     out,
+    externalId: argv.externalId,
     spinner,
     bijective: argv.bijective,
     rfc7464: argv.rfc7464,
@@ -144,7 +146,7 @@ exports.handler = async function (argv) {
         encoding: "utf-8",
         flag: "r",
       };
-      const changeData = await fs.readFile(context.filename, config);
+      const changeData = await fsPromise.readFile(context.filename, config);
 
       await generateBundleWork(context, changeData);
     }

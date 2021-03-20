@@ -2,7 +2,7 @@
  * Represents the top-level `cooperative` command, which simply delegates to
  * the various sub-command modules
  */
-exports.command = "bundle <command> [--out <challenge-file>] <input-files..>";
+exports.command = "bundle <command> <inputFiles..>";
 exports.aliases = ["bundle"];
 exports.desc = "Generate bundle files";
 exports.builder = function (yargs) {

@@ -6,13 +6,13 @@ various tools for working with [MapRoulette](https://maproulette.org).
 Use `mr --help` for a list of top-level commands, and `mr <command> --help` for
 usage and options available for a specific command.
 
-
 ## Prerequisites
+
 - [Node.js](https://nodejs.org) (v12.15 LTS or higher)
 - [npm](http://npm.js)
 
-
 ## Installation
+
 Installing globally allows you to run the `mr` command from anywhere.
 
 ```
@@ -20,6 +20,7 @@ npm install -g @maproulette/mr-cli
 ```
 
 ## Upgrading
+
 Repeating the installation command will upgrade a global copy to the latest
 version.
 
@@ -27,8 +28,8 @@ version.
 npm install -g @maproulette/mr-cli
 ```
 
-
 ## Creating Cooperative Challenges
+
 Cooperative challenges associate existing, uncomitted, in-progress work with
 each task. That work is then presented to MapRoulette mappers for final
 completion or verification.
@@ -55,8 +56,8 @@ specify the name of an output file instead with the `--out` parameter.
 > and diligently inspect the generated tasks as this tool almost certainly
 > contains bugs
 
-
 ### JOSM Workflow
+
 1. Make edits in JOSM
 2. Save file -- **don't** upload to OSM. If you want full control over which
    edits go into each task, save the work for each task into its own file
@@ -65,8 +66,8 @@ specify the name of an output file instead with the `--out` parameter.
 4. Create a new MapRoulette challenge and choose to upload a local file,
    providing the challenge file
 
-
 ### Generating Cooperative Tasks with Attached Change Files
+
 Basic Syntax:
 
 ```
@@ -82,7 +83,7 @@ mapper through their editor just as they would for their own edits in a normal
 task.
 
 JOSM files do not organize individual edits into groups, so, by default, each
-*top-level modification* found in the JOSM file(s) (that is, modifications not
+_top-level modification_ found in the JOSM file(s) (that is, modifications not
 referenced by other modifications in the same file) will be represented as a
 single task in the challenge file. For example, if the file contained new
 buildings where each building had new nodes and a new way that referenced those
@@ -108,6 +109,7 @@ and fetch the referenced element data when needed.
 > instead of the production servers
 
 #### Example 1: Adding new, unrelated OSM nodes
+
 Assume some new benches (nodes) are to be added. As each edit (node addition)
 stands on its own, we can save all of these together in a single JOSM file if
 desired, and will have every edit turned into a separate MapRoulette task.
@@ -121,6 +123,7 @@ mr cooperative change --out new_bench_challenge.json new_benches.osm
 ```
 
 #### Example 2: Adding related, heirarchical modifications
+
 Now we wish to add some buildings, which will include new nodes and a way for
 each building. Even though each building contains multiple new OSM elements --
 nodes and a way -- these additions are heirarchical, with the nodes playing a
@@ -133,6 +136,7 @@ mr cooperative change --out new_buildings_challenge.json new_buildings.osm
 ```
 
 #### Example 3: Manually grouping related modifications together
+
 Sometimes the default behavior doesn't group modifications into tasks quite the
 way you'd like, and so full control over which modifications end up together in
 each task is needed. This can be done by saving each group of related
@@ -159,8 +163,8 @@ a file called `outlines_challenge.json`.
 mr cooperative change --out outlines_challenge.json --bijective building*.osm
 ```
 
-
 ### Generating Cooperative Tasks with Tag-Only Fixes
+
 Basic Syntax:
 
 ```
@@ -168,8 +172,7 @@ mr cooperative tag [--out <challenge-file>] [--dev] <input-files..>
 ```
 
 If your changes consist purely of tag fixes, an alternative "tag fix" (formerly
-quick fix) style cooperative challenge can be generated instead with the `mr
-cooperative tag` command. MapRoulette will present the proposed tag changes to
+quick fix) style cooperative challenge can be generated instead with the `mr cooperative tag` command. MapRoulette will present the proposed tag changes to
 mappers during task completion and allow them to approve or reject the changes
 within MapRoulette, as well as modify the tags if needed. Approved changes are
 submitted directly to OSM by MapRoulette itself, removing the need for external
@@ -182,7 +185,7 @@ There is no ability to manually group edits for tag fix tasks, and any grouping
 in an OSMChange file will be ignored.
 
 Tag-fixes for each task are computed by comparing the proposed state in the
-change file with the versions of OpenStreetMap data *referenced in the file*
+change file with the versions of OpenStreetMap data _referenced in the file_
 (which may not necessarily be the very latest version at the time `mr` is run)
 and then analyzing the differences.
 
@@ -193,7 +196,6 @@ and then analyzing the differences.
 When the tag fix is presented to a mapper in MapRoulette, the latest OSM data
 will first be fetched so that only pertinent tag changes are shown to the
 mapper.
-
 
 ## Attaching Data To Tasks
 
@@ -216,13 +218,14 @@ mr attach task [--in <challenge-file>] [--out <challenge-file>] <kind|as-is> <au
 ```
 
 #### Example 1: Attach GPX reference layers based on OSM id
+
 Assume that we have a `my_challenge.geojson` file and that each task has an
 `osmid` feature property formatted like `n1234`, `n5678`, etc., and that
 our respective attachment files are named `attachment_n1234.gpx`,
 `attachment_n5678.gpx`, and so on.
 
 In order for mr-cli to know how to match up which file with which task, it's
-necessary to provide a *file pattern* that shows mr-cli how to build the filename
+necessary to provide a _file pattern_ that shows mr-cli how to build the filename
 for each task based on the value of a feature property. In this case, we need to
 tell mr-cli to use the value of the `osmid` property in the filename, which we
 can do by surrounding it with curly braces as so: `attachment_{osmid}.gpx`
@@ -238,6 +241,7 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind 
 ```
 
 #### Example 2: Attaching multiple reference layers to tasks
+
 Building on Example 1 above, the file pattern can include wildcard characters
 that can be used to match multiple files. All matching files will be included
 as attachments. Perhaps we have both a GPX layer and an OSM layer for each task.
@@ -257,11 +261,12 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind 
 ```
 
 #### Example 3: Extracting only relevant parts of property value
+
 Building on Example 1, what if our `osmid` property was instead formatted
 as `node/1234`, `node/4567` while our files were still named `attachment_n1234.gpx`,
 `attachment_n5678.gpx`, and so on? We'll need to extract the first letter of the
-type as well as the numeric id. mr-cli makes that possible through *property
-patterns*.
+type as well as the numeric id. mr-cli makes that possible through _property
+patterns_.
 
 Property patterns are standard [regular
 expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet),
@@ -289,6 +294,7 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind 
 ```
 
 #### Example 4: More control over the filename pattern
+
 In Example 3, we were able to continue referencing `{osmid}` in our filename
 pattern because we were lucky to want exactly the captured data in exactly the
 order it appeared in the property value. That may not always be the case, and
@@ -312,6 +318,7 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind 
 ```
 
 #### Example 5: Specifying an explicit file type
+
 So far we've always used the `--auto-detect` option, which inspects the actual
 attachment data (not the filename) to try to determine what type of file it
 represents. You can also explicitly specify the type if you want. Note, however,
@@ -324,6 +331,7 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind 
 ```
 
 #### Example 6: Attaching blobs
+
 MapRoulette supports attachments of arbitrary data as blobs. These are intended
 for attachments that are to be consumed by external processes, and are ignored
 by MapRoulette.
@@ -340,6 +348,7 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --kind 
 ```
 
 #### Using your own generated attachments as-is
+
 Normally the mr-cli tool takes your raw attachment files and builds all of the
 proper task attachment JSON required by MapRoulette, as
 [documented](https://learn.maproulette.org/documentation/task-attachments/).
@@ -353,6 +362,7 @@ mr attach task --in my_challenge.geojson --out updated_challenge.geojson --as-is
 ```
 
 #### Mixing multiple kinds of attachments
+
 mr-cli only allows one kind of attachment (such as blobs or reference layers)
 in a single run, but you can add additional kinds of attachments with
 additional runs on the output. The additional matching attachments will be
@@ -368,26 +378,60 @@ omits the `--in` so that it reads from the standard input:
 mr attach task --in my_challenge.geojson --kind blob --format xml --encode --file-pattern 'blobs_{osmid}.xml' | mr attach task --out updated_challenge.geojson --kind referenceLayer --auto-detect --file-pattern 'layers_{osmid}.gpx'
 ```
 
-
 ### Additional Notes
+
 - Generated challenge files use a
-[line-by-line](https://learn.maproulette.org/documentation/line-by-line-geojson/)
-format that is well suited to streaming, whereby each line in the file contains a
-complete GeoJSON object representing a single task in the challenge. It may not be
-possible to open or manipulate this file using traditional GeoJSON tools
+  [line-by-line](https://learn.maproulette.org/documentation/line-by-line-geojson/)
+  format that is well suited to streaming, whereby each line in the file contains a
+  complete GeoJSON object representing a single task in the challenge. It may not be
+  possible to open or manipulate this file using traditional GeoJSON tools
 
 - As of v0.1.2, [RFC 7464](https://tools.ietf.org/html/rfc7464) compliant
-line-by-line GeoJSON is generated by default. If you must upload your challenge
-to a MapRoulette instance earlier than v3.6.5, you can specify `--no-rfc7464`
-to generate the old format.
+  line-by-line GeoJSON is generated by default. If you must upload your challenge
+  to a MapRoulette instance earlier than v3.6.5, you can specify `--no-rfc7464`
+  to generate the old format.
 
 - This utility has not been tested on Windows
 
+## Bundling Tasks Into Feature Collections By External ID
+
+Using the `bundle external` command allows you to provide a GeoJson file of similar tasks and bundle the tasks into feature collections based on an ID of your choice.
+
+### Syntax
+
+Provide
+
+```
+mr bundle external [<externalId>] [<outputGeoJsonFile>] [<inputGeoJsonFile>]
+```
+
+### Requirements
+
+- The input file should be structured like so:
+
+```
+{
+   "type": "FeatureCollection",
+   "name": "ClusterIDexample",
+   "crs": { "type": "name", "properties": { ... },
+   "features": [
+      { "type": "Feature", "properties": { "EXTERNAL_ID": "3771", ... }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 20.70735900555, 54.712488311130002 ] ] } },
+      ...
+   ]
+}
+```
+
+- The external ID that you wish to bundle your tasks by should be provided in the feature properties object. All tasks can have unique external IDs, but all tasks must at least have the paramenter for this script to work.
 
 ## Development
+
 1. Clone the repo
 2. `npm install` to install NPM packages
 
 Run with `npm run mr -- <command>`. If you're writing to the standard output,
 use `npm --silent run mr` so that the generated GeoJSON isn't polluted with
 status messages from NPM.
+
+```
+
+```
