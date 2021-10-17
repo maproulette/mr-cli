@@ -1,6 +1,6 @@
 {
   "name": "@maproulette/mr-cli",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Utilities for MapRoulette challenge management",
   "keywords": [
     "maproulette",
