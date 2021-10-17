@@ -270,7 +270,7 @@ const Utils = {
     return new Promise((resolve, reject) => {
       const versionId = `${change.elementType}/${change.elementId}/${change.element.version}`
       if (Utils.versionedElements.has(versionId)) {
-        resolve(utils.versionedElements.get(versionId))
+        resolve(Utils.versionedElements.get(versionId))
         return
       }
 
@@ -307,7 +307,7 @@ const Utils = {
       elementIds.forEach(elementId => {
         const referenceId = `${elementType}/${elementId}`
         if (Utils.versionedElements.has(referenceId)) {
-          results.set(elementId, utils.versionedElements.get(referenceId))
+          results.set(elementId, Utils.versionedElements.get(referenceId))
         }
         else if (localElements && localElements.has(elementId)) {
           results.set(elementId, localElements.get(elementId))
