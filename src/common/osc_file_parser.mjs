@@ -1,17 +1,17 @@
-import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
+import find from 'lodash.find';
+import flatten from 'lodash.flatten';
+import fromPairs from 'lodash.frompairs';
 import { parseStringPromise } from 'xml2js';
-import fromPairs from 'lodash.frompairs'
-import find from 'lodash.find'
-import flatten from 'lodash.flatten'
-import Utils from './utils.mjs'
-import Constants from './constants.mjs'
+import Constants from './constants.mjs';
+import Utils from './utils.mjs';
 
 const OSCFileParser = {
   /**
    * Parse OSMChange (.osc) change file, returning intermediate data structures
    * used for conversion
    */
-  parse: async function(oscData) {
+  parse: async function (oscData) {
     const json = Utils.normalizeAttributes(await parseStringPromise(oscData.toString()))
     const elementMaps = {
       node: new Map(),
@@ -38,16 +38,16 @@ const OSCFileParser = {
 
           change[elementType].forEach(element => {
             elementMaps[elementType].set(element.id, element)
-            changeElements.push({elementType, elementId: element.id, element, operation})
+            changeElements.push({ elementType, elementId: element.id, element, operation })
 
             if (element.nd) {
               element.nd.forEach(nodeRef => {
-                references.push({elementType: 'node', elementId: nodeRef.ref})
+                references.push({ elementType: 'node', elementId: nodeRef.ref })
               })
             }
             else if (element.member) {
               element.member.forEach(member => {
-                references.push({elementType: member.type, elementId: member.ref})
+                references.push({ elementType: member.type, elementId: member.ref })
               })
             }
           })
@@ -93,7 +93,7 @@ const OSCFileParser = {
    * Explode a single OSMchange XML document with multiple changes into
    * multiple XML documents, with one change per document
    */
-  explode: async function(xmlString) {
+  explode: async function (xmlString) {
     // Note that "nodes" here refer to XML nodes, not OSM nodes
     const doc = new DOMParser().parseFromString(xmlString)
     const serializer = new XMLSerializer()
@@ -105,15 +105,15 @@ const OSCFileParser = {
 
       // skip extraneous XML nodes, such as text nodes
       if (currentNode.nodeName !== 'modify' &&
-          currentNode.nodeName !== 'create' &&
-          currentNode.nodeName !== 'delete') {
+        currentNode.nodeName !== 'create' &&
+        currentNode.nodeName !== 'delete') {
         continue
       }
 
       const change =
         "<?xml version='1.0' encoding='UTF-8'?>\n" +
         "<osmChange version='0.6'>\n" +
-          serializer.serializeToString(currentNode) + "\n" +
+        serializer.serializeToString(currentNode) + "\n" +
         "</osmChange>"
 
       separateChanges.push(change)
@@ -122,7 +122,7 @@ const OSCFileParser = {
     return separateChanges
   },
 
-  josmToOSC: function(xmlString) {
+  josmToOSC: function (xmlString) {
     const doc = new DOMParser().parseFromString(xmlString)
     const serializer = new XMLSerializer()
     const changeOperations = []
@@ -133,8 +133,8 @@ const OSCFileParser = {
 
       // skip extraneous XML nodes, such as text nodes
       if (currentNode.nodeName !== 'node' &&
-          currentNode.nodeName !== 'way' &&
-          currentNode.nodeName !== 'relation') {
+        currentNode.nodeName !== 'way' &&
+        currentNode.nodeName !== 'relation') {
         continue
       }
 
@@ -155,7 +155,7 @@ const OSCFileParser = {
           }
         }
 
-        changeOperations.push({operationType, node: currentNode})
+        changeOperations.push({ operationType, node: currentNode })
       }
     }
 

@@ -1,19 +1,19 @@
-import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
+import filter from 'lodash.filter';
+import find from 'lodash.find';
+import fromPairs from 'lodash.frompairs';
 import { parseStringPromise } from 'xml2js';
-import fromPairs from 'lodash.frompairs'
-import find from 'lodash.find'
-import filter from 'lodash.filter'
-import Utils from './utils.mjs'
-import Constants from './constants.mjs'
+import Constants from './constants.mjs';
+import Utils from './utils.mjs';
 
 const JOSMFileParser = {
   /**
    * Parse JSON representation of JOSM change file, returning intermediate data
    * structures used for conversion
    */
-  parse: async function(josmData) {
+  parse: async function (josmData) {
     const json = Utils.normalizeAttributes(await parseStringPromise(josmData.toString()))
-    
+
     const elementMaps = {
       node: new Map(),
       way: new Map(),
@@ -24,7 +24,7 @@ const JOSMFileParser = {
 
     const data = json.osm
     const elementDataSets = ['node', 'way', 'relation'].map(
-      elementType => ({elementType, map: elementMaps[elementType], elements: data[elementType]})
+      elementType => ({ elementType, map: elementMaps[elementType], elements: data[elementType] })
     )
 
     // FIXME there is a parsing error going on here
@@ -35,8 +35,8 @@ const JOSMFileParser = {
           // Treat negative ids as automatic modify action even if action attribute is missing
           const action =
             element.action ?
-            element.action :
-            (element.id < 0 ? Constants.osm.operations.modify : null)
+              element.action :
+              (element.id < 0 ? Constants.osm.operations.modify : null)
 
           if (action) {
             changes.push([{
@@ -48,12 +48,12 @@ const JOSMFileParser = {
 
             if (element.nd) {
               element.nd.forEach(nodeRef => {
-                references.push({elementType: 'node', elementId: nodeRef.ref})
+                references.push({ elementType: 'node', elementId: nodeRef.ref })
               })
             }
             else if (element.member) {
               element.member.forEach(member => {
-                references.push({elementType: member.type, elementId: member.ref})
+                references.push({ elementType: member.type, elementId: member.ref })
               })
             }
           }
@@ -93,7 +93,7 @@ const JOSMFileParser = {
    * multiple XML documents, with one change per document (plus OSM elements
    * referenced by the change)
    */
-  explode: async function(xmlString, atTopLevel=false) {
+  explode: async function (xmlString, atTopLevel = false) {
     // Note that "nodes" here refer to XML nodes, not OSM nodes
     const doc = new DOMParser().parseFromString(xmlString)
     const parentNode = doc.getElementsByTagName('osm').item(0)
@@ -106,15 +106,15 @@ const JOSMFileParser = {
 
       // skip extraneous XML nodes, such as text nodes
       if (currentNode.nodeName !== 'node' &&
-          currentNode.nodeName !== 'way' &&
-          currentNode.nodeName !== 'relation') {
+        currentNode.nodeName !== 'way' &&
+        currentNode.nodeName !== 'relation') {
         continue
       }
 
       // If an XML node has a negative id, but no action attribute, normalize it
       // to have an action attribute
       if (!currentNode.attributes.getNamedItem('action') &&
-          parseInt(currentNode.attributes.getNamedItem('id').nodeValue) < 0 ) {
+        parseInt(currentNode.attributes.getNamedItem('id').nodeValue) < 0) {
         const normalizedAction = doc.createAttribute("action")
         normalizedAction.value = Constants.osm.operations.modify // JOSM uses modify for creates
         currentNode.attributes.setNamedItem(normalizedAction)
@@ -152,8 +152,8 @@ const JOSMFileParser = {
       const change =
         "<?xml version='1.0' encoding='UTF-8'?>\n" +
         "<osm version='0.6' generator='JOSM'>\n" +
-          Utils.serializeSupportingNodes(node, nodesById, serializer) +
-          serializer.serializeToString(node) + "\n" +
+        Utils.serializeSupportingNodes(node, nodesById, serializer) +
+        serializer.serializeToString(node) + "\n" +
         "</osm>"
 
       separateDocs.push(change)

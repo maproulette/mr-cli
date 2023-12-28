@@ -1,16 +1,14 @@
+import { createWriteStream, readFileSync } from 'fs'
+import _differenceBy from 'lodash.differenceby'
+import _differenceWith from 'lodash.differencewith'
+import _flatten from 'lodash.flatten'
 import _fromPairs from 'lodash.frompairs'
 import _isEqual from 'lodash.isequal'
-import _differenceWith from 'lodash.differencewith'
-import _differenceBy from 'lodash.differenceby'
-import _pick from 'lodash.pick'
 import _isFinite from 'lodash.isfinite'
-import _flatten from 'lodash.flatten'
-import { createWriteStream, readFileSync } from 'fs'
-import Spinner from '../../common/spinner.mjs'
-import Utils from '../../common/utils.mjs'
-import Constants from '../../common/constants.mjs'
 import JOSMFileParser from '../../common/josm_file_parser.mjs'
 import OSCFileParser from '../../common/osc_file_parser.mjs'
+import Spinner from '../../common/spinner.mjs'
+import Utils from '../../common/utils.mjs'
 
 // Kick off throttling of operations, one of which is executed every 250ms so as
 // to not overwhelm the OSM API
@@ -21,7 +19,7 @@ Utils.startOperationRunner(250)
  * including cooperative work for realizing the change, to the output stream
  * using the intermediate data structures from parseJOSMChanges
  */
-const generateCooperativeWork = async (context, {changes, elementMaps, elementDataSetsByType, references}) => {
+const generateCooperativeWork = async (context, { changes, elementMaps, elementDataSetsByType, references }) => {
   // Tag fixes can only reference a single element per change, so flatten the
   // changes
   const allChanges = _flatten(changes)
@@ -43,7 +41,7 @@ const generateCooperativeWork = async (context, {changes, elementMaps, elementDa
         operation.data.operations = dependentOperations
       }
     }
-    catch(exception) {
+    catch (exception) {
       // If user wants to skip missing, just ignore
       if (context.skip) {
         context.spinner.warn(`Skipping: ${exception.message}`)
@@ -59,7 +57,7 @@ const generateCooperativeWork = async (context, {changes, elementMaps, elementDa
         version: 2,
         type: cooperativeType.tags,
       },
-      operations: [ operation ],
+      operations: [operation],
     }
 
     const geometry = await geoJSONGeometryFor(currentChange, elementDataSetsByType)
@@ -106,8 +104,8 @@ const operationTypeFor = change => {
  */
 const operationsFor = async change => {
   if (change.operation !== osm.operations.modify ||
-      change.elementId < 0 ||
-      (_isFinite(change.element.version) && change.element.version < 1)) {
+    change.elementId < 0 ||
+    (_isFinite(change.element.version) && change.element.version < 1)) {
     throw new Error("only tag changes are allowed. Use a changefile-style cooperative challenge for more complex edits.")
   }
 
@@ -174,7 +172,7 @@ const hasGeometryChanges = (priorData, change) => {
     return true
   }
 
-  switch(change.elementType) {
+  switch (change.elementType) {
     case 'node':
       if (priorData.lat !== change.element.lat || priorData.lon !== change.element.lon) {
         return true
@@ -258,7 +256,7 @@ export async function handler(argv) {
       spinner.succeed()
     }
   }
-  catch(exception) {
+  catch (exception) {
     context.spinner.fail(`${context.filename}: ${exception.message}`)
     stopOperationRunner()
     process.exit(2)

@@ -6,7 +6,7 @@ import ora from 'ora'
  * will still be written to stderr in quiet mode, but not in silent mode
  */
 class Spinner {
-  constructor(initialMessage, options={}) {
+  constructor(initialMessage, options = {}) {
     this.options = options
 
     // Silent mode implies quiet mode

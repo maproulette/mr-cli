@@ -1,10 +1,10 @@
-import jsBase64 from 'js-base64'
 import { createWriteStream, readFileSync } from 'fs'
-import Spinner from '../../common/spinner.mjs'
-import Utils from '../../common/utils.mjs'
+import jsBase64 from 'js-base64'
 import Constants from '../../common/constants.mjs'
 import JOSMFileParser from '../../common/josm_file_parser.mjs'
 import OSCFileParser from '../../common/osc_file_parser.mjs'
+import Spinner from '../../common/spinner.mjs'
+import Utils from '../../common/utils.mjs'
 
 /**
  * Generate and write line-by-line GeoJSON entries describing each change,
@@ -42,7 +42,7 @@ const generateCooperativeWork = async (context, changeData) => {
       writeTaskGeoJSON(feature, changeContent, _format.osmChange, context)
     })
   }
-  catch(exception) {
+  catch (exception) {
     context.spinner.fail(`${context.filename}: ${exception.message}`)
     process.exit(2)
   }
@@ -136,7 +136,7 @@ export async function handler(argv) {
     }
     spinner.succeed()
   }
-  catch(exception) {
+  catch (exception) {
     spinner.fail(`Generate tasks: ${exception.message}`)
     process.exit(2)
   }

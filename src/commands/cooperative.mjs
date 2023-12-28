@@ -3,7 +3,7 @@ import { commands } from './cooperative_commands/index.mjs'
 export const command = 'cooperative <command> [--out <challenge-file>] <input-files..>'
 export const aliases = ['coop']
 export const desc = 'Generate a cooperative challenge'
-export function builder (yargs) {
+export function builder(yargs) {
   return yargs
     .boolean('josm')
     .describe('josm', 'Force input files to be treated as JOSM Change files')
@@ -13,4 +13,4 @@ export function builder (yargs) {
     .describe('dev', 'Use development OSM servers instead of production servers')
     .commands(commands)
 }
-export function handler (argv) {}
+export function handler(argv) { }

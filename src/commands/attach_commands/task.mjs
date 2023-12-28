@@ -1,11 +1,10 @@
+import { propEach } from '@turf/turf'
+import { createReadStream, createWriteStream, readFileSync } from 'fs'
 import glob from 'glob'
 import jsBase64 from 'js-base64'
-import { readFileSync, createReadStream, createWriteStream } from 'fs'
 import { createInterface } from 'readline'
-import { propEach } from '@turf/turf'
 import { v4 as uuidv4 } from 'uuid'
 import Spinner from '../../common/spinner.mjs'
-import Constants from '../../common/constants.mjs'
 
 function matchingTaskAttachment(context, task) {
   let property = context.property
@@ -67,7 +66,7 @@ function autoDetectType(rawAttachment) {
       return { type: 'geojson', format: 'json' }
     }
   }
-  catch(err) {} // ignore
+  catch (err) { } // ignore
 
   return null // auto-detection failed
 }
@@ -217,7 +216,7 @@ export async function handler(argv) {
     await processLineByLine(context)
     spinner.succeed()
   }
-  catch(exception) {
+  catch (exception) {
     spinner.fail(`Add attachments: ${exception.message}`)
     process.exit(2)
   }
