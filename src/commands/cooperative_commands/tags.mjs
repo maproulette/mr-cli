@@ -1,21 +1,16 @@
-const { DOMParser } = require('xmldom')
-const xmlToJSON = require('xmltojson')
-const _fromPairs = require('lodash.frompairs')
-const _isEqual = require('lodash.isequal')
-const _differenceWith = require('lodash.differencewith')
-const _differenceBy = require('lodash.differenceby')
-const _pick = require('lodash.pick')
-const _isFinite = require('lodash.isfinite')
-const _flatten = require('lodash.flatten')
-const fs = require('fs')
-const Spinner = require('../../common/spinner')
-const Utils = require('../../common/utils')
-const Constants = require('../../common/constants')
-const JOSMFileParser = require('../../common/josm_file_parser')
-const OSCFileParser = require('../../common/osc_file_parser')
-
-// Setup xmlToJSON make use of the DOMParser package since there's no browser
-xmlToJSON.stringToXML = (string) => new DOMParser().parseFromString(string, 'text/xml')
+import _fromPairs from 'lodash.frompairs'
+import _isEqual from 'lodash.isequal'
+import _differenceWith from 'lodash.differencewith'
+import _differenceBy from 'lodash.differenceby'
+import _pick from 'lodash.pick'
+import _isFinite from 'lodash.isfinite'
+import _flatten from 'lodash.flatten'
+import { createWriteStream, readFileSync } from 'fs'
+import Spinner from '../../common/spinner.mjs'
+import Utils from '../../common/utils.mjs'
+import Constants from '../../common/constants.mjs'
+import JOSMFileParser from '../../common/josm_file_parser.mjs'
+import OSCFileParser from '../../common/osc_file_parser.mjs'
 
 // Kick off throttling of operations, one of which is executed every 250ms so as
 // to not overwhelm the OSM API
@@ -38,7 +33,7 @@ const generateCooperativeWork = async (context, {changes, elementMaps, elementDa
     const operation = {
       operationType: operationTypeFor(currentChange),
       data: {
-        id: Utils.idStringFor(currentChange),
+        id: idStringFor(currentChange),
       }
     }
 
@@ -62,17 +57,17 @@ const generateCooperativeWork = async (context, {changes, elementMaps, elementDa
     const cooperativeWork = {
       meta: {
         version: 2,
-        type: Constants.cooperativeType.tags,
+        type: cooperativeType.tags,
       },
       operations: [ operation ],
     }
 
-    const geometry = await Utils.geoJSONGeometryFor(currentChange, elementDataSetsByType)
+    const geometry = await geoJSONGeometryFor(currentChange, elementDataSetsByType)
     const geoJSON = {
       type: "FeatureCollection",
       features: [{
         type: "Feature",
-        properties: Utils.geoJSONPropertiesFor(currentChange),
+        properties: geoJSONPropertiesFor(currentChange),
         geometry,
       }],
       cooperativeWork,
@@ -80,7 +75,7 @@ const generateCooperativeWork = async (context, {changes, elementMaps, elementDa
 
     if (context.rfc7464) {
       // RFC 7464 start of sequence
-      context.out.write(Constants.controlChars.RS, "utf8")
+      context.out.write(controlChars.RS, "utf8")
     }
     context.out.write(JSON.stringify(geoJSON), "utf8")
     context.out.write("\n", "utf8")
@@ -93,7 +88,7 @@ const generateCooperativeWork = async (context, {changes, elementMaps, elementDa
  * Determines the needed independent operation for the given change
  */
 const operationTypeFor = change => {
-  if (change.operation === Constants.osm.operations.delete) {
+  if (change.operation === osm.operations.delete) {
     return 'deleteElement'
   }
   else if (change.element.id < 0) {
@@ -110,13 +105,13 @@ const operationTypeFor = change => {
  * the change
  */
 const operationsFor = async change => {
-  if (change.operation !== Constants.osm.operations.modify ||
+  if (change.operation !== osm.operations.modify ||
       change.elementId < 0 ||
       (_isFinite(change.element.version) && change.element.version < 1)) {
     throw new Error("only tag changes are allowed. Use a changefile-style cooperative challenge for more complex edits.")
   }
 
-  const priorData = await Utils.fetchReferencedElement(change)
+  const priorData = await fetchReferencedElement(change)
 
   if (hasGeometryChanges(priorData, change)) {
     throw new Error("only tag changes are allowed. Use a changefile-style cooperative challenge for more complex edits.")
@@ -131,7 +126,7 @@ const operationsFor = async change => {
  */
 const tagChangeOperations = (priorData, change) => {
   // Nothing to do for element deletions
-  if (change.operation !== Constants.osm.operations.modify) {
+  if (change.operation !== osm.operations.modify) {
     return []
   }
 
@@ -156,7 +151,7 @@ const tagChangeOperations = (priorData, change) => {
   if (toSet && toSet.length > 0) {
     operations.push({
       operation: "setTags",
-      data: _fromPairs(toSet.map(tag => [tag.k, Utils.normalizeTagValue(tag.v)])),
+      data: _fromPairs(toSet.map(tag => [tag.k, normalizeTagValue(tag.v)])),
     })
   }
 
@@ -175,7 +170,7 @@ const tagChangeOperations = (priorData, change) => {
  */
 const hasGeometryChanges = (priorData, change) => {
   // New or deleted elements
-  if (change.operation !== Constants.osm.operations.modify || change.elementId < 0) {
+  if (change.operation !== osm.operations.modify || change.elementId < 0) {
     return true
   }
 
@@ -202,13 +197,11 @@ const hasGeometryChanges = (priorData, change) => {
   return false
 }
 
-// yargs command-module functions. See:
-// https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
-exports.command = 'tag [--out <challenge-file>] <input-files..>'
+export const command = 'tag [--out <challenge-file>] <input-files..>'
 
-exports.describe = 'Tasks with tag-only fixes'
+export const describe = 'Tasks with tag-only fixes'
 
-exports.builder = function(yargs) {
+export function builder(yargs) {
   return yargs
     .positional('input-files', {
       describe: 'One or more JOSM .osm files to process',
@@ -221,17 +214,17 @@ exports.builder = function(yargs) {
     .help()
 }
 
-exports.handler = async function(argv) {
+export async function handler(argv) {
   // Startup a progress spinner
   const spinner = new Spinner('Initialize', { quiet: argv.quiet }).start()
 
   // Point to different OSM server if needed
   if (argv.dev) {
-    Utils.osmServer = Constants.osm.devServer
+    osmServer = osm.devServer
   }
 
   // Setup write stream for output containing line-by-line GeoJSON entries
-  const out = argv.out ? fs.createWriteStream(argv.out) : process.stdout
+  const out = argv.out ? createWriteStream(argv.out) : process.stdout
 
   // Read the input file(s) and kick things off
   if (!argv.inputFiles || argv.inputFiles.length === 0) {
@@ -258,7 +251,7 @@ exports.handler = async function(argv) {
           context.osmChange = true
         }
       }
-      const changeData = fs.readFileSync(context.filename)
+      const changeData = readFileSync(context.filename)
       const parser = context.osmChange ? OSCFileParser : JOSMFileParser
       const parsed = await parser.parse(changeData)
       await generateCooperativeWork(context, parsed)
@@ -267,14 +260,14 @@ exports.handler = async function(argv) {
   }
   catch(exception) {
     context.spinner.fail(`${context.filename}: ${exception.message}`)
-    Utils.stopOperationRunner()
+    stopOperationRunner()
     process.exit(2)
   }
 
   // Clean up and shut down
   spinner.start('Finish up')
   out.end(() => {
-    Utils.stopOperationRunner()
+    stopOperationRunner()
     spinner.succeed('Finish up')
     process.exit(0);
   })

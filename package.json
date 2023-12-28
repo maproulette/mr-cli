@@ -1,6 +1,7 @@
 {
   "name": "@maproulette/mr-cli",
   "version": "0.1.4",
+  "type": "module",
   "description": "Utilities for MapRoulette challenge management",
   "keywords": [
     "maproulette",
@@ -12,15 +13,16 @@
   "repository": "github:maproulette/mr-cli",
   "homepage": "https://github.com/maproulette/mr-cli#readme",
   "bugs": "https://github.com/maproulette/mr-cli/issues",
-  "main": "src/index.js",
+  "main": "src/index.mjs",
   "bin": {
-    "mr": "src/index.js"
+    "mr": "src/index.mjs"
   },
   "scripts": {
-    "mr": "src/index.js"
+    "mr": "src/index.mjs"
   },
   "dependencies": {
     "@turf/turf": "^5.1.6",
+    "@xmldom/xmldom": "^0.8.0",
     "glob": "^7.1.6",
     "js-base64": "^2.5.2",
     "lodash.differenceby": "^4.8.0",
@@ -37,9 +39,9 @@
     "node-fetch": "^2.6.0",
     "ora": "^3.4.0",
     "uuid": "^8.2.0",
-    "xmldom": "^0.1.27",
+    "xml2js": "^0.6.2",
     "xmltojson": "^1.3.5",
-    "yargs": "^13.3.0"
+    "yargs": "^17.7.0"
   },
   "engines": {
     "node": ">=10.15"

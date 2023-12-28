@@ -1,11 +1,10 @@
-const glob = require('glob')
-const Base64 = require('js-base64').Base64
-const fs = require('fs')
-const Spinner = require('../../common/spinner')
-const Utils = require('../../common/utils')
-const Constants = require('../../common/constants')
-const JOSMFileParser = require('../../common/josm_file_parser')
-const OSCFileParser = require('../../common/osc_file_parser')
+import jsBase64 from 'js-base64'
+import { createWriteStream, readFileSync } from 'fs'
+import Spinner from '../../common/spinner.mjs'
+import Utils from '../../common/utils.mjs'
+import Constants from '../../common/constants.mjs'
+import JOSMFileParser from '../../common/josm_file_parser.mjs'
+import OSCFileParser from '../../common/osc_file_parser.mjs'
 
 /**
  * Generate and write line-by-line GeoJSON entries describing each change,
@@ -36,11 +35,11 @@ const generateCooperativeWork = async (context, changeData) => {
     // Generate GeoJSON for feature(s), storing XML change content in osmChange
     // (.osc) format
     features.forEach((feature, index) => {
-      let changeContent = featureChanges[index]
+      let changeContent = Utils.featureChanges[index]
       if (!context.osmChange) {
-        changeContent = OSCFileParser.josmToOSC(featureChanges[index])
+        changeContent = parser.josmToOSC(Utils.featureChanges[index])
       }
-      writeTaskGeoJSON(feature, changeContent, Constants.format.osmChange, context)
+      writeTaskGeoJSON(feature, changeContent, _format.osmChange, context)
     })
   }
   catch(exception) {
@@ -56,32 +55,30 @@ function writeTaskGeoJSON(features, change, format, context) {
     cooperativeWork: {
       meta: {
         version: 2,
-        type: Constants.cooperativeType.changeFile,
+        type: cooperativeType.changeFile,
       },
       file: {
-        type: Constants.fileType.xml,
+        type: fileType.xml,
         format,
-        encoding: Constants.encoding.base64,
-        content: Base64.encode(change),
+        encoding: _encoding.base64,
+        content: jsBase64.Base64.encode(change),
       }
     }
   }
 
   if (context.rfc7464) {
     // RFC 7464 start of sequence
-    context.out.write(Constants.controlChars.RS, "utf8")
+    context.out.write(controlChars.RS, "utf8")
   }
   context.out.write(JSON.stringify(geoJSON), "utf8")
   context.out.write("\n", "utf8")
 }
 
-// yargs command-module functions. See:
-// https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
-exports.command = 'change [--out <challenge-file>] <input-files..>'
+export const command = 'change [--out <challenge-file>] <input-files..>'
 
-exports.describe = 'Tasks with change files'
+export const describe = 'Tasks with change files'
 
-exports.builder = function(yargs) {
+export function builder(yargs) {
   return yargs
     .positional('input-files', {
       describe: 'One or more JOSM .osm files to process',
@@ -94,17 +91,17 @@ exports.builder = function(yargs) {
     .help()
 }
 
-exports.handler = async function(argv) {
+export async function handler(argv) {
   // Startup a progress spinner
   const spinner = new Spinner('Initialize', { quiet: argv.quiet }).start()
 
   // Point to different OSM server if needed
   if (argv.dev) {
-    Utils.osmServer = Constants.osm.devServer
+    osmServer = Constants.osm.devServer
   }
 
   // Setup write stream for output containing line-by-line GeoJSON entries
-  const out = argv.out ? fs.createWriteStream(argv.out) : process.stdout
+  const out = argv.out ? createWriteStream(argv.out) : process.stdout
 
   // Read the input file(s) and kick things off
   if (!argv.inputFiles || argv.inputFiles.length === 0) {
@@ -134,7 +131,7 @@ exports.handler = async function(argv) {
         }
       }
 
-      const changeData = fs.readFileSync(context.filename)
+      const changeData = readFileSync(context.filename)
       await generateCooperativeWork(context, changeData.toString())
     }
     spinner.succeed()

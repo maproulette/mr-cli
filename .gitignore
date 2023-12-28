@@ -10,3 +10,4 @@ npm-debug.*
 *.mobileprovision
 *.swp
 .DS_Store
+.vscode/

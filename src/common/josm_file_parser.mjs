@@ -1,13 +1,10 @@
-const { DOMParser, XMLSerializer } = require('xmldom')
-const xmlToJSON = require('xmltojson')
-const _fromPairs = require('lodash.frompairs')
-const _find = require('lodash.find')
-const _filter = require('lodash.filter')
-const Utils = require('./utils')
-const Constants = require('./constants')
-
-// Setup xmlToJSON make use of the DOMParser package since there's no browser
-xmlToJSON.stringToXML = (string) => new DOMParser().parseFromString(string, 'text/xml')
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
+import { parseStringPromise } from 'xml2js';
+import fromPairs from 'lodash.frompairs'
+import find from 'lodash.find'
+import filter from 'lodash.filter'
+import Utils from './utils.mjs'
+import Constants from './constants.mjs'
 
 const JOSMFileParser = {
   /**
@@ -15,8 +12,8 @@ const JOSMFileParser = {
    * structures used for conversion
    */
   parse: async function(josmData) {
-    const json = Utils.normalizeAttributes(xmlToJSON.parseString(josmData.toString()))
-
+    const json = Utils.normalizeAttributes(await parseStringPromise(josmData.toString()))
+    
     const elementMaps = {
       node: new Map(),
       way: new Map(),
@@ -25,11 +22,12 @@ const JOSMFileParser = {
     const changes = []
     const references = []
 
-    const data = json.osm[0]
+    const data = json.osm
     const elementDataSets = ['node', 'way', 'relation'].map(
       elementType => ({elementType, map: elementMaps[elementType], elements: data[elementType]})
     )
 
+    // FIXME there is a parsing error going on here
     elementDataSets.forEach((elementSet, index) => {
       if (elementSet.elements) {
         elementSet.elements.forEach(element => {
@@ -69,7 +67,7 @@ const JOSMFileParser = {
     const topLevelElementTypedIds = new Set()
     changes.forEach(changeElements => {
       changeElements.forEach(element => {
-        const isReferenced = _find(references, ref =>
+        const isReferenced = find(references, ref =>
           ref.elementType === element.elementType && ref.elementId === element.elementId
         )
 
@@ -82,7 +80,7 @@ const JOSMFileParser = {
 
     return ({
       elementMaps,
-      elementDataSetsByType: _fromPairs(elementDataSets.map(es => [es.elementType, es])),
+      elementDataSetsByType: fromPairs(elementDataSets.map(es => [es.elementType, es])),
       changes,
       references,
       topLevelElements,
@@ -143,7 +141,7 @@ const JOSMFileParser = {
     // is, modified nodes not referenced by other nodes)
     let docNodes = actionNodes
     if (atTopLevel) {
-      docNodes = _filter(actionNodes, node =>
+      docNodes = filter(actionNodes, node =>
         !supportingNodeReferences.has(`${node.nodeName}/${node.attributes.getNamedItem('id').nodeValue}`)
       )
     }
@@ -165,4 +163,5 @@ const JOSMFileParser = {
   },
 }
 
-module.exports = JOSMFileParser
+export default JOSMFileParser
+

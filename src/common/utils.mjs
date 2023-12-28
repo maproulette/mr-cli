@@ -1,12 +1,12 @@
-const { DOMParser, XMLSerializer } = require('xmldom')
-const xmlToJSON = require('xmltojson')
-const turf = require('@turf/turf')
-const fetch = require('node-fetch')
-const _isPlainObject = require('lodash.isplainobject')
-const _transform = require('lodash.transform')
-const _fromPairs = require('lodash.frompairs')
-const _isFinite = require('lodash.isfinite')
-const Constants = require('./constants')
+import { parseStringPromise } from 'xml2js';
+import turf from '@turf/turf';
+import fetch from 'node-fetch';
+import isPlainObject from 'lodash.isplainobject';
+import transform from 'lodash.transform';
+import fromPairs from 'lodash.frompairs';
+import isFinite from 'lodash.isfinite';
+
+import Constants from './constants.mjs';
 
 const Utils = {
   /* Map of OSM data that caches specific versions of elements */
@@ -60,11 +60,11 @@ const Utils = {
       return json.map(value => Utils.normalizeAttributes(value))
     }
 
-    if (!_isPlainObject(json)) {
+    if (!isPlainObject(json)) {
       return json
     }
 
-    return _transform(json, (result, value, key) => {
+    return transform(json, (result, value, key) => {
       if (key === '_attr') {
         Object.keys(value).forEach(attrName => {
           result[attrName] = value[attrName]['_value']
@@ -80,7 +80,7 @@ const Utils = {
    * Normalize tag values, converting numeric values to strings
    */
   normalizeTagValue: function(value) {
-    return _isFinite(value) ? value.toString() : value
+    return isFinite(value) ? value.toString() : value
   },
 
   /**
@@ -133,7 +133,7 @@ const Utils = {
   geoJSONPropertiesFor: function(change) {
     const properties =
       change.element.tag ?
-      _fromPairs(change.element.tag.map(tag => [tag.k, Utils.normalizeTagValue(tag.v)])) :
+      fromPairs(change.element.tag.map(tag => [tag.k, Utils.normalizeTagValue(tag.v)])) :
       {}
     properties['@id'] = Utils.idStringFor(change)
 
@@ -282,8 +282,8 @@ const Utils = {
             return
           }
 
-          res.text().then(priorVersionXML => {
-            const priorVersion = Utils.normalizeAttributes(xmlToJSON.parseString(priorVersionXML.toString()))
+          res.text().then(async priorVersionXML => {
+            const priorVersion = Utils.normalizeAttributes(await parseStringPromise(priorVersionXML.toString()))
             priorData = priorVersion.osm[0][change.elementType][0]
 
             Utils.versionedElements.set(versionId, priorData)
@@ -347,4 +347,4 @@ const Utils = {
   },
 }
 
-module.exports = Utils
+export default Utils

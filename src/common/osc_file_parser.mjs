@@ -1,13 +1,10 @@
-const { DOMParser, XMLSerializer } = require('xmldom')
-const xmlToJSON = require('xmltojson')
-const _fromPairs = require('lodash.frompairs')
-const _find = require('lodash.find')
-const _flatten = require('lodash.flatten')
-const Utils = require('./utils')
-const Constants = require('./constants')
-
-// Setup xmlToJSON make use of the DOMParser package since there's no browser
-xmlToJSON.stringToXML = (string) => new DOMParser().parseFromString(string, 'text/xml')
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
+import { parseStringPromise } from 'xml2js';
+import fromPairs from 'lodash.frompairs'
+import find from 'lodash.find'
+import flatten from 'lodash.flatten'
+import Utils from './utils.mjs'
+import Constants from './constants.mjs'
 
 const OSCFileParser = {
   /**
@@ -15,7 +12,7 @@ const OSCFileParser = {
    * used for conversion
    */
   parse: async function(oscData) {
-    const json = Utils.normalizeAttributes(xmlToJSON.parseString(oscData.toString()))
+    const json = Utils.normalizeAttributes(await parseStringPromise(oscData.toString()))
     const elementMaps = {
       node: new Map(),
       way: new Map(),
@@ -73,7 +70,7 @@ const OSCFileParser = {
     const topLevelElements = []
     changes.forEach(changeElements => {
       changeElements.forEach(element => {
-        const isReferenced = _find(references, ref =>
+        const isReferenced = find(references, ref =>
           ref.elementType === element.elementType && ref.elementId === element.elementId
         )
 
@@ -85,7 +82,7 @@ const OSCFileParser = {
 
     return ({
       elementMaps,
-      elementDataSetsByType: _fromPairs(elementDataSets.map(es => [es.elementType, es])),
+      elementDataSetsByType: fromPairs(elementDataSets.map(es => [es.elementType, es])),
       changes,
       references,
       topLevelElements,
@@ -165,7 +162,7 @@ const OSCFileParser = {
     const oscLines = [
       "<?xml version='1.0' encoding='UTF-8'?>",
       "<osmChange version='0.6'>",
-    ].concat(_flatten(changeOperations.map(operation => [
+    ].concat(flatten(changeOperations.map(operation => [
       `  <${operation.operationType}>`,
       '  ' + serializer.serializeToString(operation.node),
       `  </${operation.operationType}>`
@@ -177,4 +174,4 @@ const OSCFileParser = {
   },
 }
 
-module.exports = OSCFileParser
+export default OSCFileParser

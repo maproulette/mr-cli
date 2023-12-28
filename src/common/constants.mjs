@@ -54,4 +54,4 @@ const Constants = Object.freeze({
   }),
 })
 
-module.exports = Constants
+export default Constants

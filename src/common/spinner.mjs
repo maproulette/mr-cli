@@ -1,4 +1,4 @@
-const ora = require('ora')
+import ora from 'ora'
 
 /**
  * Wraps an ora spinner, adding support for quiet and silent modes of operation
@@ -64,4 +64,4 @@ class Spinner {
   }
 }
 
-module.exports = Spinner
+export default Spinner

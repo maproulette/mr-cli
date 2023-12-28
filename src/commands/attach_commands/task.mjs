@@ -1,14 +1,11 @@
-const glob = require('glob')
-const Base64 = require('js-base64').Base64
-const fs = require('fs')
-const readline = require('readline')
-const turf = require('@turf/turf')
-const { v4: uuidv4 } = require('uuid')
-const Spinner = require('../../common/spinner')
-const Utils = require('../../common/utils')
-const Constants = require('../../common/constants')
-const JOSMFileParser = require('../../common/josm_file_parser')
-const OSCFileParser = require('../../common/osc_file_parser')
+import glob from 'glob'
+import jsBase64 from 'js-base64'
+import { readFileSync, createReadStream, createWriteStream } from 'fs'
+import { createInterface } from 'readline'
+import { propEach } from '@turf/turf'
+import { v4 as uuidv4 } from 'uuid'
+import Spinner from '../../common/spinner.mjs'
+import Constants from '../../common/constants.mjs'
 
 function matchingTaskAttachment(context, task) {
   let property = context.property
@@ -23,7 +20,7 @@ function matchingTaskAttachment(context, task) {
   }
   const re = context.propertyPattern ? new RegExp(context.propertyPattern) : null
   let matchingFilename = null
-  turf.propEach(task, properties => {
+  propEach(task, properties => {
     if (properties[property]) {
       if (!re) {
         matchingFilename = context.filePattern.replace(`{${property}}`, properties[property])
@@ -66,7 +63,7 @@ function autoDetectType(rawAttachment) {
 
   try {
     const jsonData = JSON.parse(rawAttachment)
-    if (Constants.geoJSON.types.indexOf(jsonData.type) !== -1) {
+    if (geoJSON.types.indexOf(jsonData.type) !== -1) {
       return { type: 'geojson', format: 'json' }
     }
   }
@@ -76,7 +73,7 @@ function autoDetectType(rawAttachment) {
 }
 
 function asAttachment(context, filename) {
-  const rawAttachment = fs.readFileSync(filename, "utf8")
+  const rawAttachment = readFileSync(filename, "utf8")
   if (context.asIs) {
     const attachment = JSON.parse(rawAttachment)
     if (!attachment.id) {
@@ -98,7 +95,7 @@ function asAttachment(context, filename) {
 
   if (context.kind === 'blob') {
     if (context.encode || context.format === 'xml') {
-      attachment.data = Base64.encode(rawAttachment)
+      attachment.data = jsBase64.Base64.encode(rawAttachment)
       attachment.encoding = 'base64'
     }
     else {
@@ -127,7 +124,7 @@ function asAttachment(context, filename) {
         break
       case 'osm':
       case 'gpx':
-        attachment.data = Base64.encode(rawAttachment)
+        attachment.data = jsBase64.Base64.encode(rawAttachment)
         if (!attachment.format) {
           attachment.format = 'xml'
         }
@@ -145,14 +142,14 @@ function asAttachment(context, filename) {
 }
 
 async function processLineByLine(context) {
-  const rl = readline.createInterface({
+  const rl = createInterface({
     input: context.in,
     crlfDelay: Infinity, // Always treat \r\n as \n
   })
 
   for await (const line of rl) {
     // Strip leading RS character if present
-    const normalizedLine = line[0] === Constants.controlChars.RS ? line.slice(1) : line
+    const normalizedLine = line[0] === controlChars.RS ? line.slice(1) : line
     const task = JSON.parse(normalizedLine)
     const attachmentName = matchingTaskAttachment(context, task)
     if (attachmentName) {
@@ -168,20 +165,18 @@ async function processLineByLine(context) {
     }
 
     if (context.rfc7464) {
-      context.out.write(Constants.controlChars.RS, "utf8")
+      context.out.write(controlChars.RS, "utf8")
     }
     context.out.write(JSON.stringify(task), "utf8")
     context.out.write("\n", "utf8")
   }
 }
 
-// yargs command-module functions. See:
-// https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
-exports.command = 'task [--out <challenge-file>] [--in <challenge-file>]'
+export const command = 'task [--out <challenge-file>] [--in <challenge-file>]'
 
-exports.describe = 'Add attachments to tasks'
+export const describe = 'Add attachments to tasks'
 
-exports.builder = function(yargs) {
+export function builder(yargs) {
   return yargs
     .describe('in', 'challenge GeoJSON to which task attachments are to be added')
     .describe({
@@ -190,15 +185,15 @@ exports.builder = function(yargs) {
     .help()
 }
 
-exports.handler = async function(argv) {
+export async function handler(argv) {
   // Startup a progress spinner
   const spinner = new Spinner('Initialize', { quiet: argv.quiet }).start()
 
   // Setup read stream for input containing line-by-line GeoJSON entries
-  const input = argv.in ? fs.createReadStream(argv.in) : process.stdin
+  const input = argv.in ? createReadStream(argv.in) : process.stdin
 
   // Setup write stream for output containing line-by-line GeoJSON entries
-  const out = argv.out ? fs.createWriteStream(argv.out) : process.stdout
+  const out = argv.out ? createWriteStream(argv.out) : process.stdout
 
   const context = {
     in: input,

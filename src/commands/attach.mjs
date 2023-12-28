@@ -1,10 +1,9 @@
-/**
- * Represents the top-level `attach` command for task attachments, which simply
- * delegates to the various sub-command modules
- */
-exports.command = 'attach <command> [--out <challenge-file>]'
-exports.desc = 'Attach data to tasks'
-exports.builder = function (yargs) {
+import { commands } from './attach_commands/index.mjs';
+
+export const command = 'attach <command> [--out <challenge-file>]';
+export const desc = 'Attach data to tasks';
+
+export const builder = (yargs) => {
   return yargs
     .string('property')
     .describe('property', 'Task property to reference for attachment matching')
@@ -25,6 +24,7 @@ exports.builder = function (yargs) {
     .boolean('encode')
     .describe('encode', 'Base64-encode data (needed for blob kind with non-JSON data)')
     .demand('file-pattern')
-    .commandDir('attach_commands')
-}
-exports.handler = function (argv) {}
+    .commands(commands);
+};
+
+export const handler = (argv) => { };
