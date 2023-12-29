@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osmChange version="0.6" generator="CGImap 0.8.10 (3336104 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <create>
+  <node id="11466101519" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685185" lon="-111.8942878">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101520" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7686379" lon="-111.8942904">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101521" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7684120" lon="-111.8941428">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101522" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7683362" lon="-111.8941407">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101523" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685069" lon="-111.8941391">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101524" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685850" lon="-111.8941402">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101525" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687698" lon="-111.8944835">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101526" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687698" lon="-111.8945925">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101527" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687669" lon="-111.8946967">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101528" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688114" lon="-111.8946433">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101529" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688090" lon="-111.8945391">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101530" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688399" lon="-111.8945126">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101531" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688050" lon="-111.8944534">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101532" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687649" lon="-111.8943952">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101533" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687690" lon="-111.8947835">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101534" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688082" lon="-111.8947280">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101535" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688539" lon="-111.8946687">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101536" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687770" lon="-111.8948867">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101537" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688102" lon="-111.8948348">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101538" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688499" lon="-111.8947772">
+   <tag k="leaf_cycle" v="deciduous"/>
+   <tag k="leaf_type" v="broadleaved"/>
+   <tag k="natural" v="tree"/>
+  </node>
+ </create>
+ <create>
+  <node id="11466101539" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687533" lon="-111.8948237"/>
+ </create>
+ <create>
+  <node id="11466101540" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688940" lon="-111.8946364"/>
+ </create>
+ <create>
+  <node id="11466101541" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7688715" lon="-111.8946068"/>
+ </create>
+ <create>
+  <node id="11466101542" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687521" lon="-111.8947639"/>
+ </create>
+ <create>
+  <node id="11466101543" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687557" lon="-111.8948962"/>
+ </create>
+ <create>
+  <node id="11466101544" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690891" lon="-111.8948972"/>
+ </create>
+ <create>
+  <node id="11466101545" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689216" lon="-111.8946729"/>
+ </create>
+ <create>
+  <node id="11466101546" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690919" lon="-111.8948269"/>
+ </create>
+ <create>
+  <node id="11466101547" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690919" lon="-111.8947676"/>
+ </create>
+ <create>
+  <node id="11466101548" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689721" lon="-111.8946100"/>
+ </create>
+ <create>
+  <node id="11466101549" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689501" lon="-111.8946380"/>
+ </create>
+ <create>
+  <node id="11466101550" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689725" lon="-111.8945735"/>
+ </create>
+ <create>
+  <node id="11466101551" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690935" lon="-111.8944127"/>
+ </create>
+ <create>
+  <node id="11466101552" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690931" lon="-111.8943571"/>
+ </create>
+ <create>
+  <node id="11466101553" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689497" lon="-111.8945444"/>
+ </create>
+ <create>
+  <node id="11466101554" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689212" lon="-111.8945095"/>
+ </create>
+ <create>
+  <node id="11466101555" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690927" lon="-111.8942830"/>
+ </create>
+ <create>
+  <node id="11466101556" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687541" lon="-111.8942820"/>
+ </create>
+ <create>
+  <node id="11466101557" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690911" lon="-111.8947280"/>
+ </create>
+ <create>
+  <node id="11466101558" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690911" lon="-111.8944550"/>
+ </create>
+ <create>
+  <node id="11466101559" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689857" lon="-111.8945920"/>
+ </create>
+ <create>
+  <node id="11466101560" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690932" lon="-111.8942441"/>
+ </create>
+ <create>
+  <node id="11466101561" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7690933" lon="-111.8941997"/>
+ </create>
+ <create>
+  <node id="11466101562" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689329" lon="-111.8941990"/>
+ </create>
+ <create>
+  <node id="11466101563" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689328" lon="-111.8942434"/>
+ </create>
+ <create>
+  <node id="11466101564" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689088" lon="-111.8942463"/>
+ </create>
+ <create>
+  <node id="11466101565" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7689089" lon="-111.8942019"/>
+ </create>
+ <create>
+  <node id="11466101566" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687485" lon="-111.8942013"/>
+ </create>
+ <create>
+  <node id="11466101567" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7687484" lon="-111.8942456"/>
+ </create>
+ <create>
+  <node id="11466101568" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7683162" lon="-111.8942010"/>
+ </create>
+ <create>
+  <node id="11466110469" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7682317" lon="-111.8942286"/>
+ </create>
+ <create>
+  <node id="11466110470" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681856" lon="-111.8942317"/>
+ </create>
+ <create>
+  <node id="11466110471" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681367" lon="-111.8942333"/>
+ </create>
+ <create>
+  <node id="11466110472" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7680882" lon="-111.8942259"/>
+ </create>
+ <create>
+  <node id="11466110473" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7680722" lon="-111.8942233"/>
+ </create>
+ <create>
+  <node id="11466110474" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7680734" lon="-111.8942010"/>
+ </create>
+ <create>
+  <node id="11466110475" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685538" lon="-111.8939921"/>
+ </create>
+ <create>
+  <node id="11466110476" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685450" lon="-111.8939979"/>
+ </create>
+ <create>
+  <node id="11466110477" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685205" lon="-111.8940005"/>
+ </create>
+ <create>
+  <node id="11466110478" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7683338" lon="-111.8940000"/>
+ </create>
+ <create>
+  <node id="11466110479" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7683334" lon="-111.8938990"/>
+ </create>
+ <create>
+  <node id="11466110480" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7683611" lon="-111.8939000"/>
+ </create>
+ <create>
+  <node id="11466110481" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685434" lon="-111.8939720"/>
+ </create>
+ <create>
+  <node id="11466110482" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7685526" lon="-111.8939788"/>
+ </create>
+ <create>
+  <node id="11466110483" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7679688" lon="-111.8942751"/>
+ </create>
+ <create>
+  <node id="11466110484" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7679692" lon="-111.8942021"/>
+ </create>
+ <create>
+  <node id="11466110485" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7679544" lon="-111.8942037"/>
+ </create>
+ <create>
+  <node id="11466110486" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7679236" lon="-111.8942418"/>
+ </create>
+ <create>
+  <node id="11466110487" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7679107" lon="-111.8942497"/>
+ </create>
+ <create>
+  <node id="11466110488" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678971" lon="-111.8942524"/>
+ </create>
+ <create>
+  <node id="11466110489" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678823" lon="-111.8942566"/>
+ </create>
+ <create>
+  <node id="11466110490" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678731" lon="-111.8942550"/>
+ </create>
+ <create>
+  <node id="11466110491" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678635" lon="-111.8942497"/>
+ </create>
+ <create>
+  <node id="11466110492" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678522" lon="-111.8942487"/>
+ </create>
+ <create>
+  <node id="11466110493" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678374" lon="-111.8942476"/>
+ </create>
+ <create>
+  <node id="11466110494" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678138" lon="-111.8942534"/>
+ </create>
+ <create>
+  <node id="11466110495" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7677989" lon="-111.8942645"/>
+ </create>
+ <create>
+  <node id="11466110496" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678021" lon="-111.8942693"/>
+ </create>
+ <create>
+  <node id="11466110497" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7680250" lon="-111.8941648"/>
+ </create>
+ <create>
+  <node id="11466110498" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7680245" lon="-111.8942090"/>
+ </create>
+ <create>
+  <node id="11466110499" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7680245" lon="-111.8942217"/>
+ </create>
+ <create>
+  <node id="11466110500" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681180" lon="-111.8942305"/>
+ </create>
+ <create>
+  <node id="11466110501" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681191" lon="-111.8944158"/>
+ </create>
+ <create>
+  <node id="11466110502" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7679720" lon="-111.8944164"/>
+ </create>
+ <create>
+  <node id="11466110503" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7679716" lon="-111.8943105"/>
+ </create>
+ <create>
+  <node id="11466110504" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678094" lon="-111.8943079"/>
+ </create>
+ <create>
+  <node id="11466110505" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7678042" lon="-111.8942793"/>
+ </create>
+ <create>
+  <node id="11466110506" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7677949" lon="-111.8942555"/>
+ </create>
+ <create>
+  <node id="11466110507" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7677721" lon="-111.8942201"/>
+ </create>
+ <create>
+  <node id="11466110508" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7677501" lon="-111.8942042"/>
+ </create>
+ <create>
+  <node id="11466110509" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7677300" lon="-111.8941968"/>
+ </create>
+ <create>
+  <node id="11466110510" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7676936" lon="-111.8941984"/>
+ </create>
+ <create>
+  <node id="11466110511" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7676707" lon="-111.8942132"/>
+ </create>
+ <create>
+  <node id="11466110512" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7676471" lon="-111.8942375"/>
+ </create>
+ <create>
+  <node id="11466110513" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7676255" lon="-111.8942682"/>
+ </create>
+ <create>
+  <node id="11466110514" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7676190" lon="-111.8942973"/>
+ </create>
+ <create>
+  <node id="11466110515" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7675465" lon="-111.8942852"/>
+ </create>
+ <create>
+  <node id="11466110516" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7675465" lon="-111.8942767"/>
+ </create>
+ <create>
+  <node id="11466110517" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7675573" lon="-111.8942772"/>
+ </create>
+ <create>
+  <node id="11466110518" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7675577" lon="-111.8941264"/>
+ </create>
+ <create>
+  <node id="11466110519" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681183" lon="-111.8941264"/>
+ </create>
+ <create>
+  <node id="11466110520" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681179" lon="-111.8941540"/>
+ </create>
+ <create>
+  <node id="11466110521" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7675576" lon="-111.8941874"/>
+ </create>
+ <create>
+  <node id="11466110522" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7675577" lon="-111.8941532"/>
+ </create>
+ <create>
+  <node id="11466110523" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681179" lon="-111.8941814"/>
+ </create>
+ <create>
+  <node id="11466110524" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7681179" lon="-111.8941668"/>
+ </create>
+ <create>
+  <node id="11466110525" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7670281" lon="-111.8942412"/>
+ </create>
+ <create>
+  <node id="11466110526" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7669363" lon="-111.8942074"/>
+ </create>
+ <create>
+  <node id="11466110527" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7668714" lon="-111.8942042"/>
+ </create>
+ <create>
+  <node id="11466110528" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7661842" lon="-111.8942005"/>
+ </create>
+ <create>
+  <node id="11466110529" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7661830" lon="-111.8942487"/>
+ </create>
+ <create>
+  <node id="11466110530" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7660969" lon="-111.8942471"/>
+ </create>
+ <create>
+  <node id="11466110531" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7660945" lon="-111.8943111"/>
+ </create>
+ <create>
+  <node id="11466110532" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7668910" lon="-111.8943105"/>
+ </create>
+ <create>
+  <node id="11466110533" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909" lat="40.7668922" lon="-111.8942418"/>
+ </create>
+ <create>
+  <way id="1235226285" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101539"/>
+   <nd ref="11466101540"/>
+   <nd ref="11466101541"/>
+   <nd ref="11466101542"/>
+   <nd ref="11466101539"/>
+   <tag k="landuse" v="grass"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226286" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101543"/>
+   <nd ref="11466101544"/>
+   <nd ref="11466101545"/>
+   <nd ref="11466101543"/>
+   <tag k="landuse" v="grass"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226287" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101546"/>
+   <nd ref="11466101547"/>
+   <nd ref="11466101548"/>
+   <nd ref="11466101549"/>
+   <nd ref="11466101546"/>
+   <tag k="landuse" v="grass"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226288" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101550"/>
+   <nd ref="11466101551"/>
+   <nd ref="11466101552"/>
+   <nd ref="11466101553"/>
+   <nd ref="11466101550"/>
+   <tag k="landuse" v="grass"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226289" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101554"/>
+   <nd ref="11466101555"/>
+   <nd ref="11466101556"/>
+   <nd ref="11466101554"/>
+   <tag k="landuse" v="grass"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226290" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101557"/>
+   <nd ref="11466101558"/>
+   <nd ref="11466101559"/>
+   <nd ref="11466101557"/>
+   <tag k="leisure" v="garden"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226291" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101560"/>
+   <nd ref="11466101561"/>
+   <nd ref="11466101562"/>
+   <nd ref="11466101563"/>
+   <nd ref="11466101560"/>
+   <tag k="leisure" v="garden"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226292" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101564"/>
+   <nd ref="11466101565"/>
+   <nd ref="11466101566"/>
+   <nd ref="11466101567"/>
+   <nd ref="11466101564"/>
+   <tag k="leisure" v="garden"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226293" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466101568"/>
+   <nd ref="11466110469"/>
+   <nd ref="11466110470"/>
+   <nd ref="11466110471"/>
+   <nd ref="11466110500"/>
+   <nd ref="11466110472"/>
+   <nd ref="11466110473"/>
+   <nd ref="11466110474"/>
+   <nd ref="11466101568"/>
+   <tag k="leisure" v="garden"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226294" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466110475"/>
+   <nd ref="11466110476"/>
+   <nd ref="11466110477"/>
+   <nd ref="11466110478"/>
+   <nd ref="11466110479"/>
+   <nd ref="11466110480"/>
+   <nd ref="11466110481"/>
+   <nd ref="11466110482"/>
+   <nd ref="11466110475"/>
+   <tag k="leisure" v="garden"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226295" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466110483"/>
+   <nd ref="11466110484"/>
+   <nd ref="11466110485"/>
+   <nd ref="11466110486"/>
+   <nd ref="11466110487"/>
+   <nd ref="11466110488"/>
+   <nd ref="11466110489"/>
+   <nd ref="11466110490"/>
+   <nd ref="11466110491"/>
+   <nd ref="11466110492"/>
+   <nd ref="11466110493"/>
+   <nd ref="11466110494"/>
+   <nd ref="11466110495"/>
+   <nd ref="11466110496"/>
+   <nd ref="11466110483"/>
+   <tag k="leisure" v="garden"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226296" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466110497"/>
+   <nd ref="11466110498"/>
+   <tag k="highway" v="footway"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226297" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466110498"/>
+   <nd ref="11466110499"/>
+   <tag k="highway" v="steps"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226298" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466110500"/>
+   <nd ref="11466110501"/>
+   <nd ref="11466110502"/>
+   <nd ref="11466110503"/>
+   <nd ref="11466110504"/>
+   <nd ref="11466110505"/>
+   <nd ref="11466110506"/>
+   <nd ref="11466110507"/>
+   <nd ref="11466110508"/>
+   <nd ref="11466110509"/>
+   <nd ref="11466110510"/>
+   <nd ref="11466110511"/>
+   <nd ref="11466110512"/>
+   <nd ref="11466110513"/>
+   <nd ref="11466110514"/>
+   <nd ref="11466110515"/>
+   <nd ref="11466110516"/>
+   <nd ref="11466110517"/>
+   <nd ref="11466110521"/>
+   <nd ref="11466110522"/>
+   <nd ref="11466110518"/>
+   <nd ref="11466110519"/>
+   <nd ref="11466110520"/>
+   <nd ref="11466110524"/>
+   <nd ref="11466110523"/>
+   <nd ref="11466110500"/>
+  </way>
+ </create>
+ <create>
+  <way id="1235226299" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="11466110525"/>
+   <nd ref="11466110526"/>
+   <nd ref="11466110527"/>
+   <nd ref="11466110528"/>
+   <nd ref="11466110529"/>
+   <nd ref="11466110530"/>
+   <nd ref="11466110531"/>
+   <nd ref="11466110532"/>
+   <nd ref="11466110533"/>
+   <nd ref="11466110525"/>
+   <tag k="landuse" v="grass"/>
+  </way>
+ </create>
+ <create>
+  <relation id="16896968" visible="true" version="1" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <member type="way" ref="1235226298" role="outer"/>
+   <member type="way" ref="1235226295" role="inner"/>
+   <tag k="highway" v="pedestrian"/>
+   <tag k="type" v="multipolygon"/>
+  </relation>
+ </create>
+ <modify>
+  <way id="152356351" visible="true" version="3" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="1651793682"/>
+   <nd ref="9395071961"/>
+   <nd ref="9395071957"/>
+   <nd ref="1651793677"/>
+   <nd ref="1651793675"/>
+   <nd ref="1651793679"/>
+   <nd ref="1651793680"/>
+   <nd ref="1651793682"/>
+   <tag k="landuse" v="grass"/>
+  </way>
+ </modify>
+ <modify>
+  <way id="366709469" visible="true" version="3" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="3706977213"/>
+   <nd ref="3706977219"/>
+   <nd ref="3706977220"/>
+   <nd ref="3706977221"/>
+   <nd ref="11466110521"/>
+   <nd ref="4247059606"/>
+   <tag k="highway" v="footway"/>
+  </way>
+ </modify>
+ <modify>
+  <way id="709015763" visible="true" version="3" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="3701656329"/>
+   <nd ref="3701656330"/>
+   <tag k="highway" v="service"/>
+   <tag k="surface" v="concrete"/>
+  </way>
+ </modify>
+ <modify>
+  <way id="370756203" visible="true" version="5" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="3706979327"/>
+   <nd ref="3744458321"/>
+   <nd ref="11466110522"/>
+   <nd ref="4247059606"/>
+   <nd ref="3744458320"/>
+   <nd ref="11466110497"/>
+   <nd ref="4247062934"/>
+   <nd ref="3744458322"/>
+   <nd ref="11466110524"/>
+   <nd ref="3703246482"/>
+   <nd ref="3744458323"/>
+   <nd ref="9395071981"/>
+   <nd ref="9395071979"/>
+   <nd ref="9395071980"/>
+   <nd ref="1651793688"/>
+   <tag k="footway" v="sidewalk"/>
+   <tag k="highway" v="footway"/>
+  </way>
+ </modify>
+ <modify>
+  <way id="152356349" visible="true" version="8" changeset="145669718" timestamp="2023-12-29T16:49:48Z" user="mvexel" uid="8909">
+   <nd ref="9395071956"/>
+   <nd ref="9395071958"/>
+   <nd ref="1651793682"/>
+   <nd ref="1651793680"/>
+   <nd ref="1651793679"/>
+   <nd ref="1651793675"/>
+   <nd ref="1651793677"/>
+   <nd ref="3744458323"/>
+   <nd ref="3703246482"/>
+   <nd ref="11466110524"/>
+   <nd ref="3744458322"/>
+   <nd ref="11466110523"/>
+   <nd ref="6899014784"/>
+   <nd ref="3744458316"/>
+   <nd ref="4247062936"/>
+   <nd ref="1651793681"/>
+   <nd ref="1651793672"/>
+   <nd ref="1651793673"/>
+   <nd ref="9395071956"/>
+   <tag k="area" v="yes"/>
+   <tag k="highway" v="pedestrian"/>
+  </way>
+ </modify>
+</osmChange>

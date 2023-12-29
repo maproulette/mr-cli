@@ -18,7 +18,8 @@
     "mr": "src/index.mjs"
   },
   "scripts": {
-    "mr": "src/index.mjs"
+    "mr": "src/index.mjs",
+    "test": "ava"
   },
   "dependencies": {
     "@turf/turf": "^5.1.6",
@@ -45,5 +46,8 @@
   },
   "engines": {
     "node": ">=10.15"
+  },
+  "devDependencies": {
+    "ava": "^6.0.1"
   }
 }
