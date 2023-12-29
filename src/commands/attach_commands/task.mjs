@@ -148,7 +148,7 @@ async function processLineByLine(context) {
 
   for await (const line of rl) {
     // Strip leading RS character if present
-    const normalizedLine = line[0] === controlChars.RS ? line.slice(1) : line
+    const normalizedLine = line[0] === Constants.controlChars.RS ? line.slice(1) : line
     const task = JSON.parse(normalizedLine)
     const attachmentName = matchingTaskAttachment(context, task)
     if (attachmentName) {
@@ -164,7 +164,7 @@ async function processLineByLine(context) {
     }
 
     if (context.rfc7464) {
-      context.out.write(controlChars.RS, "utf8")
+      context.out.write(Constants.controlChars.RS, "utf8")
     }
     context.out.write(JSON.stringify(task), "utf8")
     context.out.write("\n", "utf8")

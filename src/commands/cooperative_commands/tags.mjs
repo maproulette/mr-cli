@@ -55,7 +55,7 @@ const generateCooperativeWork = async (context, { changes, elementMaps, elementD
     const cooperativeWork = {
       meta: {
         version: 2,
-        type: cooperativeType.tags,
+        type: Constants.cooperativeType.tags,
       },
       operations: [operation],
     }
@@ -73,7 +73,7 @@ const generateCooperativeWork = async (context, { changes, elementMaps, elementD
 
     if (context.rfc7464) {
       // RFC 7464 start of sequence
-      context.out.write(controlChars.RS, "utf8")
+      context.out.write(Constants.controlChars.RS, "utf8")
     }
     context.out.write(JSON.stringify(geoJSON), "utf8")
     context.out.write("\n", "utf8")
