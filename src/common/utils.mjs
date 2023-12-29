@@ -1,4 +1,5 @@
 import turf from '@turf/turf';
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 import fromPairs from 'lodash.frompairs';
 import isFinite from 'lodash.isfinite';
 import isPlainObject from 'lodash.isplainobject';
@@ -144,7 +145,7 @@ const Utils = {
    * Return array with lon/lat of a node element
    */
   nodeCoords: function (element) {
-    return ([element.lon, element.lat])
+    return ([element.$.lon, element.$.lat])
   },
 
   /**
@@ -344,6 +345,65 @@ const Utils = {
           })
       })
     })
+  },
+
+  josmToOSC: async function (xmlString) {
+
+    const data = await parseStringPromise(xmlString)
+    console.log(data)
+
+    // convert any josm modify actions to create actions
+
+
+
+    const doc = new DOMParser().parseFromString(xmlString)
+    const serializer = new XMLSerializer()
+    const changeOperations = []
+
+    const parentNode = doc.getElementsByTagName('osm').item(0)
+    for (let i = 0; i < parentNode.childNodes.length; i++) {
+      const currentNode = parentNode.childNodes.item(i)
+
+      // skip extraneous XML nodes, such as text nodes
+      if (currentNode.nodeName !== 'node' &&
+        currentNode.nodeName !== 'way' &&
+        currentNode.nodeName !== 'relation') {
+        continue
+      }
+
+      // XML nodes with an action attribute will become osmChange operations
+      const action = currentNode.attributes.getNamedItem('action')
+      if (action) {
+        let operationType = action.value
+
+        // osmChange doesn't use action attributes
+        currentNode.attributes.removeNamedItem('action')
+
+        // JOSM uses `modify` actions for creation as well, but osmChange uses
+        // `create`. So switch if we're creating elements (ids are negative)
+        if (operationType === Constants.osm.operations.modify) {
+          const nodeId = currentNode.attributes.getNamedItem('id').value
+          if (parseInt(nodeId) < 0) {
+            operationType = Constants.osm.operations.create
+          }
+        }
+
+        changeOperations.push({ operationType, node: currentNode })
+      }
+    }
+
+    const oscLines = [
+      "<?xml version='1.0' encoding='UTF-8'?>",
+      "<osmChange version='0.6'>",
+    ].concat(flatten(changeOperations.map(operation => [
+      `  <${operation.operationType}>`,
+      '  ' + serializer.serializeToString(operation.node),
+      `  </${operation.operationType}>`
+    ]))).concat([
+      "</osmChange>"
+    ])
+
+    return oscLines.join("\n")
   },
 }
 
