@@ -11,8 +11,8 @@ const JOSMFileParser = {
    * Parse JSON representation of JOSM change file, returning intermediate data
    * structures used for conversion
    */
-  parse: async function (josmData) {
-    const json = Utils.normalizeAttributes(await parseStringPromise(josmData.toString()))
+  parse: async function (josmXML) {
+    const josmData = Utils.normalizeAttributes(await parseStringPromise(josmXML.toString()))
 
     const elementMaps = {
       node: new Map(),
@@ -22,38 +22,37 @@ const JOSMFileParser = {
     const changes = []
     const references = []
 
-    const data = json.osm
+    const elemData = josmData.osm
     const elementDataSets = ['node', 'way', 'relation'].map(
-      elementType => ({ elementType, map: elementMaps[elementType], elements: data[elementType] })
+      elementType => ({ elementType, map: elementMaps[elementType], elements: elemData[elementType] })
     )
 
-    // FIXME there is a parsing error going on here
     elementDataSets.forEach((elementSet, index) => {
       if (elementSet.elements) {
         elementSet.elements.forEach(element => {
           elementSet.map.set(element.id, element)
           // Treat negative ids as automatic modify action even if action attribute is missing
           const action =
-            element.action ?
-              element.action :
-              (element.id < 0 ? Constants.osm.operations.modify : null)
+            element.$.action ?
+              element.$.action :
+              (element.$.id < 0 ? Constants.osm.operations.modify : null)
 
           if (action) {
             changes.push([{
               elementType: elementSet.elementType,
-              elementId: element.id,
+              elementId: element.$.id,
               element,
               operation: action,
             }])
 
             if (element.nd) {
               element.nd.forEach(nodeRef => {
-                references.push({ elementType: 'node', elementId: nodeRef.ref })
+                references.push({ elementType: 'node', elementId: nodeRef.$.ref })
               })
             }
             else if (element.member) {
               element.member.forEach(member => {
-                references.push({ elementType: member.type, elementId: member.ref })
+                references.push({ elementType: member.$.type, elementId: member.$.ref })
               })
             }
           }

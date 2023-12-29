@@ -35,11 +35,14 @@ const generateCooperativeWork = async (context, changeData) => {
     // Generate GeoJSON for feature(s), storing XML change content in osmChange
     // (.osc) format
     features.forEach((feature, index) => {
-      let changeContent = Utils.featureChanges[index]
+      let changeContent = featureChanges[index]
       if (!context.osmChange) {
-        changeContent = parser.josmToOSC(Utils.featureChanges[index])
+        // Convert JOSM XML to OSMChange XML
+        // FIXME when the context is JOSM, the parser is JOSMFileParser
+        // but josmToOSC is a method of OSCFileParser
+        changeContent = Utils.josmToOSC(featureChanges[index])
       }
-      writeTaskGeoJSON(feature, changeContent, _format.osmChange, context)
+      writeTaskGeoJSON(feature, changeContent, Constants.format.osmChange, context)
     })
   }
   catch (exception) {
@@ -55,12 +58,12 @@ function writeTaskGeoJSON(features, change, format, context) {
     cooperativeWork: {
       meta: {
         version: 2,
-        type: cooperativeType.changeFile,
+        type: Constants.cooperativeType.changeFile
       },
       file: {
-        type: fileType.xml,
+        type: Constants.fileType.xml,
         format,
-        encoding: _encoding.base64,
+        encoding: Constants.encoding.base64,
         content: jsBase64.Base64.encode(change),
       }
     }
@@ -68,7 +71,7 @@ function writeTaskGeoJSON(features, change, format, context) {
 
   if (context.rfc7464) {
     // RFC 7464 start of sequence
-    context.out.write(controlChars.RS, "utf8")
+    context.out.write(Constants.controlChars.RS, "utf8")
   }
   context.out.write(JSON.stringify(geoJSON), "utf8")
   context.out.write("\n", "utf8")
@@ -125,11 +128,7 @@ export async function handler(argv) {
       context.filename = argv.inputFiles[i]
 
       // If user hasn't forced an input type, determine from file extension
-      if (!context.osmChange && !context.josm) {
-        if (context.filename.toLowerCase().endsWith(".osc")) {
-          context.osmChange = true
-        }
-      }
+      context.osmChange = context.filename.toLowerCase().endsWith(".osc")
 
       const changeData = readFileSync(context.filename)
       await generateCooperativeWork(context, changeData.toString())
