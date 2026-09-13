@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 - Clarify that `mr-cli` generates MapRoulette-compatible files and does not post
   tasks to MapRoulette.
 
+- Add a Utah TIGER/Osmium example showing how to build a local baseline from a
+  Geofabrik PBF and generate tag-only MapRoulette tasks with `--baseline`.
+
 
 ## v0.1.2 - 2020-07-10
 - Add `attach task` command for adding task attachments to an existing
