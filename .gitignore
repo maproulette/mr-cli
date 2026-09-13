@@ -10,3 +10,6 @@ npm-debug.*
 *.mobileprovision
 *.swp
 .DS_Store
+examples/*/work/
+examples/*/real-*.geojson
+examples/*/real-*.osm

@@ -9,3 +9,4 @@
 - Updated README and changelog to document tool scope, metadata requirements, tag-mode performance, the baseline workflow, Node support, and test command.
 - Fixed relation geometry local-only error propagation by removing a resolve-only Promise wrapper around member fetches; added a baseline smoke regression for missing relation member data.
 - Tightened baseline tag validation so proposed elements must exist in the baseline, new/negative ids are rejected, and explicit JOSM create/delete actions fail instead of being coerced or dropped.
+- Added example workflows demonstrating tag-only baseline diffs from local OSM extracts: first a Help OSM drapery-store sketch, then a Utah TIGER `highway=residential` without `name=*` candidate workflow using Geofabrik `.osm.pbf`, staged `osmium tags-filter`, `osmium getid -r`, and local baseline/proposed comparison.
