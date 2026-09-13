@@ -140,12 +140,14 @@ const baselineElementFor = (change, baselineElementMaps) => {
 }
 
 const changesFromBaseline = (proposedParsed, baselineElementMaps) => {
+  validateBaselineChanges(proposedParsed, baselineElementMaps)
+
   const changes = []
   Constants.osm.elements.all.forEach(elementType => {
     proposedParsed.elementMaps[elementType].forEach((element, elementId) => {
       const baselineElement = baselineElementMaps[elementType].get(elementId)
       if (!baselineElement) {
-        return
+        throw new Error(`baseline data missing for proposed element ${elementType}/${elementId}`)
       }
 
       const change = {
@@ -162,6 +164,32 @@ const changesFromBaseline = (proposedParsed, baselineElementMaps) => {
   })
 
   return changes
+}
+
+const validateBaselineChanges = (proposedParsed, baselineElementMaps) => {
+  proposedParsed.changes.forEach(changeElements => {
+    changeElements.forEach(change => {
+      if (change.operation !== Constants.osm.operations.modify) {
+        throw new Error(`baseline mode only supports modify actions for existing elements; found ${change.operation} on ${Utils.idStringFor(change)}`)
+      }
+
+      if (change.elementId < 0) {
+        throw new Error(`baseline mode does not support new elements; found ${Utils.idStringFor(change)}`)
+      }
+    })
+  })
+
+  Constants.osm.elements.all.forEach(elementType => {
+    proposedParsed.elementMaps[elementType].forEach((_element, elementId) => {
+      if (elementId < 0) {
+        throw new Error(`baseline mode does not support new elements; found ${elementType}/${elementId}`)
+      }
+
+      if (!baselineElementMaps[elementType].has(elementId)) {
+        throw new Error(`baseline data missing for proposed element ${elementType}/${elementId}`)
+      }
+    })
+  })
 }
 
 const mergeElementDataSets = (proposedElementDataSetsByType, baselineElementMaps) => {

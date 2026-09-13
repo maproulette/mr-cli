@@ -2,7 +2,7 @@ const assert = require('assert')
 const fs = require('fs')
 const os = require('os')
 const path = require('path')
-const { execFileSync } = require('child_process')
+const { execFileSync, spawnSync } = require('child_process')
 
 const root = path.resolve(__dirname, '..')
 const mr = path.join(root, 'src', 'index.js')
@@ -13,6 +13,14 @@ function tempDir() {
 
 function runMr(args) {
   return execFileSync(mr, ['--quiet'].concat(args), {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  })
+}
+
+function runMrFailure(args) {
+  return spawnSync(mr, ['--quiet'].concat(args), {
     cwd: root,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -146,7 +154,140 @@ function assertBaselineWayGeometryWorkflow() {
   ])
 }
 
+function assertBaselineRelationMissingMemberFailure() {
+  const dir = tempDir()
+  const baseline = path.join(dir, 'baseline-relation.osm')
+  const proposed = path.join(dir, 'proposed-relation.osm')
+  const output = path.join(dir, 'tag-relation.geojson')
+
+  writeFile(baseline, `
+    <?xml version='1.0' encoding='UTF-8'?>
+    <osm version='0.6' generator='smoke'>
+      <relation id='100' visible='true' version='1'>
+        <member type='way' ref='10' role='outer'/>
+        <tag k='type' v='multipolygon'/>
+        <tag k='name' v='Old Area'/>
+      </relation>
+    </osm>
+  `)
+
+  writeFile(proposed, `
+    <?xml version='1.0' encoding='UTF-8'?>
+    <osm version='0.6' generator='smoke'>
+      <relation id='100' visible='true' version='1'>
+        <member type='way' ref='10' role='outer'/>
+        <tag k='type' v='multipolygon'/>
+        <tag k='name' v='New Area'/>
+      </relation>
+    </osm>
+  `)
+
+  const result = runMrFailure(['cooperative', 'tag', '--baseline', baseline, '--out', output, proposed])
+
+  assert.strictEqual(result.status, 2)
+  assert.match(
+    result.stderr,
+    /failed to generate geometry for relation\/100: local way data missing for 10/
+  )
+}
+
+function assertBaselineRejectsPositiveElementMissingFromBaseline() {
+  const dir = tempDir()
+  const baseline = path.join(dir, 'baseline.osm')
+  const proposed = path.join(dir, 'proposed.osm')
+  const output = path.join(dir, 'missing.geojson')
+
+  writeFile(baseline, `
+    <?xml version='1.0' encoding='UTF-8'?>
+    <osm version='0.6' generator='smoke'>
+      <node id='1' visible='true' version='1' lat='40.0' lon='-111.0'/>
+    </osm>
+  `)
+
+  writeFile(proposed, `
+    <?xml version='1.0' encoding='UTF-8'?>
+    <osm version='0.6' generator='smoke'>
+      <node id='2' visible='true' version='1' lat='40.1' lon='-111.1'>
+        <tag k='amenity' v='bench'/>
+      </node>
+    </osm>
+  `)
+
+  const result = runMrFailure(['cooperative', 'tag', '--baseline', baseline, '--out', output, proposed])
+
+  assert.strictEqual(result.status, 2)
+  assert.match(result.stderr, /baseline data missing for proposed element node\/2/)
+}
+
+function assertBaselineRejectsNegativeElement() {
+  const dir = tempDir()
+  const baseline = path.join(dir, 'baseline.osm')
+  const proposed = path.join(dir, 'proposed.osm')
+  const output = path.join(dir, 'negative.geojson')
+
+  writeFile(baseline, `
+    <?xml version='1.0' encoding='UTF-8'?>
+    <osm version='0.6' generator='smoke'>
+      <node id='1' visible='true' version='1' lat='40.0' lon='-111.0'/>
+    </osm>
+  `)
+
+  writeFile(proposed, `
+    <?xml version='1.0' encoding='UTF-8'?>
+    <osm version='0.6' generator='smoke'>
+      <node id='-1' lat='40.1' lon='-111.1'>
+        <tag k='amenity' v='bench'/>
+      </node>
+    </osm>
+  `)
+
+  const result = runMrFailure(['cooperative', 'tag', '--baseline', baseline, '--out', output, proposed])
+
+  assert.strictEqual(result.status, 2)
+  assert.match(result.stderr, /baseline mode does not support new elements; found node\/-1/)
+}
+
+function assertBaselineRejectsExplicitJosmActions() {
+  const dir = tempDir()
+  const baseline = path.join(dir, 'baseline.osm')
+
+  writeFile(baseline, `
+    <?xml version='1.0' encoding='UTF-8'?>
+    <osm version='0.6' generator='smoke'>
+      <node id='1' visible='true' version='1' lat='40.0' lon='-111.0'>
+        <tag k='amenity' v='bench'/>
+      </node>
+    </osm>
+  `)
+
+  ;['create', 'delete'].forEach(action => {
+    const proposed = path.join(dir, `${action}.osm`)
+    const output = path.join(dir, `${action}.geojson`)
+
+    writeFile(proposed, `
+      <?xml version='1.0' encoding='UTF-8'?>
+      <osm version='0.6' generator='smoke'>
+        <node id='1' action='${action}' visible='true' version='1' lat='40.0' lon='-111.0'>
+          <tag k='amenity' v='bench'/>
+        </node>
+      </osm>
+    `)
+
+    const result = runMrFailure(['cooperative', 'tag', '--baseline', baseline, '--out', output, proposed])
+
+    assert.strictEqual(result.status, 2)
+    assert.match(
+      result.stderr,
+      new RegExp(`baseline mode only supports modify actions for existing elements; found ${action} on node/1`)
+    )
+  })
+}
+
 assertChangeWorkflow()
 assertBaselineTagWorkflow()
 assertBaselineWayGeometryWorkflow()
+assertBaselineRelationMissingMemberFailure()
+assertBaselineRejectsPositiveElementMissingFromBaseline()
+assertBaselineRejectsNegativeElement()
+assertBaselineRejectsExplicitJosmActions()
 console.log('smoke tests passed')

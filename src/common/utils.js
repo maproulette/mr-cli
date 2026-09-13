@@ -187,21 +187,18 @@ const Utils = {
     })
 
     const referencedElements = {}
-    await Promise.all(Constants.osm.elements.all.map(elementType => {
-      return new Promise(async resolve => {
-        if (referencedElementIds[elementType].length === 0) {
-          referencedElements[elementType] = new Map()
-        }
-        else {
-          referencedElements[elementType] = await Utils.fetchMultipleElements(
-            elementType,
-            referencedElementIds[elementType],
-            elementDataSetsByType[elementType].map,
-            options
-          )
-        }
-        resolve()
-      })
+    await Promise.all(Constants.osm.elements.all.map(async elementType => {
+      if (referencedElementIds[elementType].length === 0) {
+        referencedElements[elementType] = new Map()
+      }
+      else {
+        referencedElements[elementType] = await Utils.fetchMultipleElements(
+          elementType,
+          referencedElementIds[elementType],
+          elementDataSetsByType[elementType].map,
+          options
+        )
+      }
     }))
 
     return Promise.all(element.member.map(async member => {

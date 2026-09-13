@@ -7,3 +7,5 @@
 - Added smoke tests for cooperative change generation and baseline tag-diff generation.
 - Added `mr cooperative tag --baseline <baseline.osm>` for local baseline/proposed tag diffs. Baseline mode avoids per-element historical OSM API lookups, rejects `.osc` input, and uses local-only geometry resolution.
 - Updated README and changelog to document tool scope, metadata requirements, tag-mode performance, the baseline workflow, Node support, and test command.
+- Fixed relation geometry local-only error propagation by removing a resolve-only Promise wrapper around member fetches; added a baseline smoke regression for missing relation member data.
+- Tightened baseline tag validation so proposed elements must exist in the baseline, new/negative ids are rejected, and explicit JOSM create/delete actions fail instead of being coerced or dropped.
