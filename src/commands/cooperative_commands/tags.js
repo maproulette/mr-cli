@@ -1,10 +1,9 @@
-const { DOMParser } = require('xmldom')
+const { DOMParser } = require('@xmldom/xmldom')
 const xmlToJSON = require('xmltojson')
 const _fromPairs = require('lodash.frompairs')
 const _isEqual = require('lodash.isequal')
 const _differenceWith = require('lodash.differencewith')
 const _differenceBy = require('lodash.differenceby')
-const _pick = require('lodash.pick')
 const _isFinite = require('lodash.isfinite')
 const _flatten = require('lodash.flatten')
 const fs = require('fs')
@@ -67,7 +66,11 @@ const generateCooperativeWork = async (context, {changes, elementMaps, elementDa
       operations: [ operation ],
     }
 
-    const geometry = await Utils.geoJSONGeometryFor(currentChange, elementDataSetsByType)
+    const geometry = await Utils.geoJSONGeometryFor(
+      currentChange,
+      elementDataSetsByType,
+      { localOnly: context.localOnly }
+    )
     const geoJSON = {
       type: "FeatureCollection",
       features: [{
@@ -109,20 +112,71 @@ const operationTypeFor = change => {
  * diff of the element referenced by the given change and the data contained in
  * the change
  */
-const operationsFor = async change => {
+const operationsFor = async (change, context) => {
   if (change.operation !== Constants.osm.operations.modify ||
       change.elementId < 0 ||
       (_isFinite(change.element.version) && change.element.version < 1)) {
     throw new Error("only tag changes are allowed. Use a changefile-style cooperative challenge for more complex edits.")
   }
 
-  const priorData = await Utils.fetchReferencedElement(change)
+  const priorData = context.baselineElementMaps ?
+    baselineElementFor(change, context.baselineElementMaps) :
+    await Utils.fetchReferencedElement(change)
 
   if (hasGeometryChanges(priorData, change)) {
     throw new Error("only tag changes are allowed. Use a changefile-style cooperative challenge for more complex edits.")
   }
 
   return tagChangeOperations(priorData, change)
+}
+
+const baselineElementFor = (change, baselineElementMaps) => {
+  const baselineElement = baselineElementMaps[change.elementType].get(change.elementId)
+  if (!baselineElement) {
+    throw new Error(`baseline data missing for existing element ${Utils.idStringFor(change)}`)
+  }
+
+  return baselineElement
+}
+
+const changesFromBaseline = (proposedParsed, baselineElementMaps) => {
+  const changes = []
+  Constants.osm.elements.all.forEach(elementType => {
+    proposedParsed.elementMaps[elementType].forEach((element, elementId) => {
+      const baselineElement = baselineElementMaps[elementType].get(elementId)
+      if (!baselineElement) {
+        return
+      }
+
+      const change = {
+        elementType,
+        elementId,
+        element,
+        operation: Constants.osm.operations.modify,
+      }
+
+      if (tagChangeOperations(baselineElement, change).length > 0 || hasGeometryChanges(baselineElement, change)) {
+        changes.push([change])
+      }
+    })
+  })
+
+  return changes
+}
+
+const mergeElementDataSets = (proposedElementDataSetsByType, baselineElementMaps) => {
+  return _fromPairs(Constants.osm.elements.all.map(elementType => {
+    const map = new Map(baselineElementMaps[elementType])
+    proposedElementDataSetsByType[elementType].map.forEach((element, elementId) => {
+      map.set(elementId, element)
+    })
+
+    return [elementType, {
+      elementType,
+      map,
+      elements: Array.from(map.values()),
+    }]
+  }))
 }
 
 /**
@@ -142,13 +196,16 @@ const tagChangeOperations = (priorData, change) => {
     toSet = change.element.tag
   }
   else {
+    const priorTags = priorData && priorData.tag ? priorData.tag : []
+    const changeTags = change.element.tag ? change.element.tag : []
+
     if (!priorData) {
       throw new Error("missing prior data for existing element")
     }
 
-    if (!_isEqual(priorData.tag, change.element.tag)) {
-      toSet = _differenceWith(change.element.tag, priorData.tag, _isEqual)
-      toUnset = _differenceBy(priorData.tag, change.element.tag, 'k')
+    if (!_isEqual(priorTags, changeTags)) {
+      toSet = _differenceWith(changeTags, priorTags, _isEqual)
+      toUnset = _differenceBy(priorTags, changeTags, 'k')
     }
   }
 
@@ -213,6 +270,8 @@ exports.builder = function(yargs) {
     .positional('input-files', {
       describe: 'One or more JOSM .osm files to process',
     })
+    .string('baseline')
+    .describe('baseline', 'Original OSM/JOSM file to diff against, avoiding per-element OSM API lookups')
     .describe({
       'out': 'Output path for MapRoulette challenge GeoJSON file',
     })
@@ -249,6 +308,18 @@ exports.handler = async function(argv) {
   }
 
   try {
+    if (argv.baseline && context.osmChange) {
+      throw new Error("--baseline is only supported for JOSM .osm input")
+    }
+
+    let baselineElementMaps = null
+    if (argv.baseline) {
+      const baselineData = fs.readFileSync(argv.baseline)
+      baselineElementMaps = (await JOSMFileParser.parse(baselineData)).elementMaps
+      context.baselineElementMaps = baselineElementMaps
+      context.localOnly = true
+    }
+
     for (let i = 0; i < argv.inputFiles.length; i++) {
       context.filename = argv.inputFiles[i]
 
@@ -258,10 +329,21 @@ exports.handler = async function(argv) {
           context.osmChange = true
         }
       }
+
+      if (baselineElementMaps && context.osmChange) {
+        throw new Error("--baseline is only supported for JOSM .osm input")
+      }
+
       const changeData = fs.readFileSync(context.filename)
       const parser = context.osmChange ? OSCFileParser : JOSMFileParser
       const parsed = await parser.parse(changeData)
-      await generateCooperativeWork(context, parsed)
+      const work = baselineElementMaps ?
+        Object.assign({}, parsed, {
+          changes: changesFromBaseline(parsed, baselineElementMaps),
+          elementDataSetsByType: mergeElementDataSets(parsed.elementDataSetsByType, baselineElementMaps),
+        }) :
+        parsed
+      await generateCooperativeWork(context, work)
       spinner.succeed()
     }
   }

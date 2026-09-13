@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v0.2.0 - TBD
+- Add `mr cooperative tag --baseline <baseline.osm>` for local baseline/proposed
+  tag diffs without per-element historical OSM API lookups.
+
+- Update runtime dependencies, including migration from `xmldom` to
+  `@xmldom/xmldom`.
+
+- Add smoke tests for cooperative change generation and baseline tag diffs.
+
+- Clarify that `mr-cli` generates MapRoulette-compatible files and does not post
+  tasks to MapRoulette.
+
 
 ## v0.1.2 - 2020-07-10
 - Add `attach task` command for adding task attachments to an existing
