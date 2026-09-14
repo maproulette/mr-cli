@@ -3,6 +3,11 @@
 The mr-cli package provides a `mr` command-line utility intended to offer
 various tools for working with [MapRoulette](https://maproulette.org).
 
+`mr-cli` generates MapRoulette-compatible challenge files. It does not create
+projects, create challenges, upload challenge files, post tasks, or otherwise
+write to MapRoulette. After generating output with `mr`, create or update the
+challenge in MapRoulette and upload the generated file there.
+
 Use `mr --help` for a list of top-level commands, and `mr <command> --help` for
 usage and options available for a specific command.
 
@@ -40,6 +45,13 @@ standard cooperative tasks with attached change files, which allows for inclusio
 of unrestricted edits; or `tag` for special tag-only fixes that can be
 completed and committed to OpenStreetMap fully within MapRoulette without need
 for an external editor.
+
+Choose `change` when the proposed work can include geometry changes, element
+creation or deletion, relation membership changes, or any edit that needs to be
+opened and reviewed in an editor. Choose `tag` only when each task is a tag-only
+change to one existing OSM element. Tag tasks can be completed inside
+MapRoulette, but they require `mr` to compare the proposed tags against the
+referenced OSM element version.
 
 One or more change files -- either saved
 [JOSM (.osm)](https://wiki.openstreetmap.org/wiki/JOSM_file_format) files or
@@ -209,7 +221,7 @@ mr cooperative change --out outlines_challenge.json --bijective building*.osm
 
 Basic Syntax:
 
-```text
+```
 mr cooperative tag [--out <challenge-file>] [--baseline <baseline.osm>] [--dev] <input-files..>
 ```
 
@@ -230,7 +242,9 @@ in an OSMChange file will be ignored.
 Tag-fixes for each task are computed by comparing the proposed state in the
 change file with the versions of OpenStreetMap data *referenced in the file*
 (which may not necessarily be the very latest version at the time `mr` is run)
-and then analyzing the differences.
+and then analyzing the differences. For JOSM `.osm` input, you can instead use
+`--baseline <baseline.osm>` to compare the proposed file against an explicit
+local baseline file.
 
 > If your change file is based on data from the OSM dev servers, then you also
 > need to add the `--dev` flag so that the OSM dev servers are contacted
@@ -440,6 +454,8 @@ to generate the old format.
 
 1. Clone the repo
 2. `npm install` to install NPM packages
+
+Run `npm test` to execute the smoke tests.
 
 Run with `npm run mr -- <command>`. If you're writing to the standard output,
 use `npm --silent run mr` so that the generated GeoJSON isn't polluted with

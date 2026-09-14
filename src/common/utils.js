@@ -1,4 +1,4 @@
-const { DOMParser, XMLSerializer } = require('xmldom')
+const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const xmlToJSON = require('xmltojson')
 const turf = require('@turf/turf')
 const fetch = require('node-fetch')
@@ -95,14 +95,14 @@ const Utils = {
    * Generate GeoJSON feature geometry describing the OSM element referenced by
    * the change
    */
-  geoJSONGeometryFor: async function(change, elementDataSetsByType) {
+  geoJSONGeometryFor: async function(change, elementDataSetsByType, options={}) {
     try {
       switch(change.elementType) {
         case 'node':
           return turf.geometry('Point', Utils.nodeCoords(change.element))
         case 'way':
           // Use Polygon if way is closed, else LineString
-          const points = await Utils.wayCoords(change.element, elementDataSetsByType)
+          const points = await Utils.wayCoords(change.element, elementDataSetsByType, options)
           if (points.length > 1 &&
               turf.booleanEqual(turf.point(points[0]), turf.point(points[points.length - 1]))) {
             return turf.geometry('Polygon', [ points ])
@@ -113,7 +113,7 @@ const Utils = {
         case 'relation':
           return turf.geometry(
             'MultiLineString',
-            await Utils.relationCoords(change.element, elementDataSetsByType)
+            await Utils.relationCoords(change.element, elementDataSetsByType, options)
           )
         default:
           throw new Error(`unrecognized element type ${change.elementType}`)
@@ -150,12 +150,13 @@ const Utils = {
   /**
    * Return array of coordinate pairs for a way element
    */
-  wayCoords: async function(element, elementDataSetsByType) {
+  wayCoords: async function(element, elementDataSetsByType, options={}) {
     const referencedNodeIds = element.nd.map(nodeRef => nodeRef.ref)
     const referencedNodes = await Utils.fetchMultipleElements(
       Constants.osm.elements.node,
       referencedNodeIds,
-      elementDataSetsByType.node.map
+      elementDataSetsByType.node.map,
+      options
     )
 
     return element.nd.map(nodeRef => {
@@ -171,7 +172,7 @@ const Utils = {
   /**
    * Return array of node coordinate pairs for members of a relation element
    */
-  relationCoords: async function(element, elementDataSetsByType) {
+  relationCoords: async function(element, elementDataSetsByType, options={}) {
     const referencedElementIds = {
       [Constants.osm.elements.node]: [],
       [Constants.osm.elements.way]: [],
@@ -186,20 +187,18 @@ const Utils = {
     })
 
     const referencedElements = {}
-    await Promise.all(Constants.osm.elements.all.map(elementType => {
-      return new Promise(async resolve => {
-        if (referencedElementIds[elementType].length === 0) {
-          referencedElements[elementType] = new Map()
-        }
-        else {
-          referencedElements[elementType] = await Utils.fetchMultipleElements(
-            elementType,
-            referencedElementIds[elementType],
-            elementDataSetsByType[elementType].map
-          )
-        }
-        resolve()
-      })
+    await Promise.all(Constants.osm.elements.all.map(async elementType => {
+      if (referencedElementIds[elementType].length === 0) {
+        referencedElements[elementType] = new Map()
+      }
+      else {
+        referencedElements[elementType] = await Utils.fetchMultipleElements(
+          elementType,
+          referencedElementIds[elementType],
+          elementDataSetsByType[elementType].map,
+          options
+        )
+      }
     }))
 
     return Promise.all(element.member.map(async member => {
@@ -214,7 +213,7 @@ const Utils = {
           const coords = Utils.nodeCoords(memberElement)
           return Promise.resolve([ coords, coords ])
         case 'way':
-          return await Utils.wayCoords(memberElement, elementDataSetsByType)
+          return await Utils.wayCoords(memberElement, elementDataSetsByType, options)
         case 'relation':
           throw new Error('super-relations are not currently supported')
       }
@@ -299,7 +298,7 @@ const Utils = {
    * member nodes for a way, hitting the API if the data isn't available
    * locally
    */
-  fetchMultipleElements: function(elementType, elementIds, localElements) {
+  fetchMultipleElements: function(elementType, elementIds, localElements, options={}) {
     return new Promise((resolve, reject) => {
       const results = new Map()
       const neededElementIds = []
@@ -320,6 +319,11 @@ const Utils = {
       // If we were able to pull all data locally, we're done
       if (neededElementIds.length === 0) {
         resolve(results)
+        return
+      }
+
+      if (options.localOnly) {
+        reject(new Error(`local ${elementType} data missing for ${neededElementIds.join(',')}`))
         return
       }
 

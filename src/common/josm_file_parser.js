@@ -1,4 +1,4 @@
-const { DOMParser, XMLSerializer } = require('xmldom')
+const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const xmlToJSON = require('xmltojson')
 const _fromPairs = require('lodash.frompairs')
 const _find = require('lodash.find')
@@ -97,7 +97,7 @@ const JOSMFileParser = {
    */
   explode: async function(xmlString, atTopLevel=false) {
     // Note that "nodes" here refer to XML nodes, not OSM nodes
-    const doc = new DOMParser().parseFromString(xmlString)
+    const doc = new DOMParser().parseFromString(xmlString, 'text/xml')
     const parentNode = doc.getElementsByTagName('osm').item(0)
 
     const nodesById = new Map()
