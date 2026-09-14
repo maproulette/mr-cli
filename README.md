@@ -3,12 +3,17 @@
 The mr-cli package provides a `mr` command-line utility intended to offer
 various tools for working with [MapRoulette](https://maproulette.org).
 
+`mr-cli` generates MapRoulette-compatible challenge files. It does not create
+projects, create challenges, upload challenge files, post tasks, or otherwise
+write to MapRoulette. After generating output with `mr`, create or update the
+challenge in MapRoulette and upload the generated file there.
+
 Use `mr --help` for a list of top-level commands, and `mr <command> --help` for
 usage and options available for a specific command.
 
 
 ## Prerequisites
-- [Node.js](https://nodejs.org) (v12.15 LTS or higher)
+- [Node.js](https://nodejs.org) (v18 LTS or higher)
 - [npm](http://npm.js)
 
 
@@ -41,6 +46,13 @@ of unrestricted edits; or `tag` for special tag-only fixes that can be
 completed and committed to OpenStreetMap fully within MapRoulette without need
 for an external editor.
 
+Choose `change` when the proposed work can include geometry changes, element
+creation or deletion, relation membership changes, or any edit that needs to be
+opened and reviewed in an editor. Choose `tag` only when each task is a tag-only
+change to one existing OSM element. Tag tasks can be completed inside
+MapRoulette, but they require `mr` to compare the proposed tags against the
+referenced OSM element version.
+
 One or more change files -- either saved
 [JOSM (.osm)](https://wiki.openstreetmap.org/wiki/JOSM_file_format) files or
 [OSMChange (.osc)](https://wiki.openstreetmap.org/wiki/OsmChange) files --
@@ -54,6 +66,49 @@ specify the name of an output file instead with the `--out` parameter.
 > :warning: the `mr cooperative` command is **EXPERIMENTAL**. Please carefully
 > and diligently inspect the generated tasks as this tool almost certainly
 > contains bugs
+
+### Input data and metadata requirements
+
+Cooperative generation depends on OSM metadata and geometry being present in
+the input files. Files saved from JOSM usually contain the needed ids, versions,
+coordinates, way node references, and relation members for the edited elements.
+If you prepare input with Overpass, request metadata and geometry, for example
+with `out meta geom`, and verify that the XML contains enough referenced node or
+member data for `mr` to build task geometry.
+
+For `change` tasks, `mr` will fetch missing referenced elements from the OSM API
+when it needs them to generate GeoJSON geometry. For `tag` tasks without
+`--baseline`, every existing modified element must include the OSM version being
+compared; `mr` fetches that specific historical element version from the OSM API
+to compute the tag operation. Use `--dev` when those ids and versions come from
+the OSM development server.
+
+Large tag-only runs can be slow because each existing modified element may need
+a separate historical version fetch from the OSM API. These requests are cached
+per element version within the run and are deliberately throttled, so repeated
+versions are reused but many unique elements still make the run network-bound.
+
+### Baseline workflow
+
+For tag-only JOSM inputs, `--baseline <baseline.osm>` provides a separate
+source-of-truth OSM file to compare against. With a baseline, `mr` computes
+tag-fix operations by comparing the proposed file to that local baseline instead
+of fetching each referenced historical element version individually. This makes
+large tag-fix batches faster and more reproducible because the diff is computed
+against an explicit local file.
+
+`--baseline` is supported for JOSM `.osm` input only. It is not supported when
+processing OSMChange `.osc` input.
+
+```
+mr cooperative tag --baseline original.osm --out tag_fixes.geojson proposed.osm
+```
+
+The proposed file does not need JOSM `action="modify"` attributes when a
+baseline is supplied. Existing elements whose tags or geometry differ from the
+baseline are inspected locally. Tag-only changes become cooperative tag
+operations; geometry changes are rejected because they are not valid tag-fix
+tasks.
 
 
 ### JOSM Workflow
@@ -164,7 +219,7 @@ mr cooperative change --out outlines_challenge.json --bijective building*.osm
 Basic Syntax:
 
 ```
-mr cooperative tag [--out <challenge-file>] [--dev] <input-files..>
+mr cooperative tag [--out <challenge-file>] [--baseline <baseline.osm>] [--dev] <input-files..>
 ```
 
 If your changes consist purely of tag fixes, an alternative "tag fix" (formerly
@@ -184,7 +239,9 @@ in an OSMChange file will be ignored.
 Tag-fixes for each task are computed by comparing the proposed state in the
 change file with the versions of OpenStreetMap data *referenced in the file*
 (which may not necessarily be the very latest version at the time `mr` is run)
-and then analyzing the differences.
+and then analyzing the differences. For JOSM `.osm` input, you can instead use
+`--baseline <baseline.osm>` to compare the proposed file against an explicit
+local baseline file.
 
 > If your change file is based on data from the OSM dev servers, then you also
 > need to add the `--dev` flag so that the OSM dev servers are contacted
@@ -387,6 +444,8 @@ to generate the old format.
 ## Development
 1. Clone the repo
 2. `npm install` to install NPM packages
+
+Run `npm test` to execute the smoke tests.
 
 Run with `npm run mr -- <command>`. If you're writing to the standard output,
 use `npm --silent run mr` so that the generated GeoJSON isn't polluted with
